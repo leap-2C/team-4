@@ -7,6 +7,9 @@ const userSchema = new Schema({
     username: { type: String },
     receivedDonations: { type: donationsSchema },
     timestamps: { type: Date, default: Date.now },
+    isVerified: {type: Boolean, default: false},
+    verificationToken: { type: String },
+    role : { type : String, enum: ['admin', 'user'], default: 'user'},
     profileId : { type: Number},
     bankCard: { type: bankCardSchema }
 });

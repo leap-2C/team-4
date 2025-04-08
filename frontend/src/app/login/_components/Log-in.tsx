@@ -1,11 +1,20 @@
+"use client"
+
 import React from "react";
 import { Coffee } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 function Login() {
 
+const router = useRouter();
+
+const handleSignUpButton = () => {
+router.push("/signup");
+}
+ 
   return (
     <div className="w-screen h-screen flex">
       <div className="w-[50%] h-full bg-amber-400 flex flex-col items-center justify-center">
@@ -35,7 +44,10 @@ function Login() {
         </div>
       </div>
       <div className="w-[50%] h-full bg-white flex flex-col items-center justify-center ">
-        <Button className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]">
+        <Button
+          onClick={handleSignUpButton}
+          className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]"
+        >
           Sign up
         </Button>
         <p className="text-[24px] font-semibold w-[407px] h-[80px] p-[24px]">
@@ -65,3 +77,4 @@ function Login() {
 }
 
 export default Login;
+

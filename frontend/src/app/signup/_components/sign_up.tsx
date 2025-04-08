@@ -1,20 +1,12 @@
-"use client"
-
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Coffee } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-
-function Login() {
-
-const router = useRouter();
-
-const handleSignUpButton = () => {
-router.push("/signup");
-}
- 
+function Signup() {
+    const router = useRouter();
   return (
     <div className="w-screen h-screen flex">
       <div className="w-[50%] h-full bg-amber-400 flex flex-col items-center justify-center">
@@ -44,30 +36,22 @@ router.push("/signup");
         </div>
       </div>
       <div className="w-[50%] h-full bg-white flex flex-col items-center justify-center ">
-        <Button
-          onClick={handleSignUpButton}
-          className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]"
-        >
-          Sign up
+        <Button onClick={() => router.replace("/login")} className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]">
+          Sign in
         </Button>
-        <p className="text-[24px] font-semibold w-[407px] h-[80px] p-[24px]">
-          Welcome back
+        <p className="text-[24px] font-semibold w-[407px] h-[80px] p-[22px] ">
+          Create Your Account
         </p>
         <div className="w-[407px] h-[304px] p-[24px] pt-0">
           <div className="flex flex-col gap-2 mb-3">
-            <p className="text-[14px] font-medium">Email</p>
+            <p className="text-[14px] text-[#71717A] pb-4">Choose a username for your page</p>
+            <p className="text-[14px] font-medium">Username</p>
             <Input
               className="w-[359px] h-[40px] rounded-md"
-              placeholder="Enter email here"
+              placeholder="Enter username here"
             ></Input>
           </div>
-          <div className="flex flex-col gap-2 mb-6">
-            <p className="text-[14px] font-medium">Password</p>
-            <Input
-              className="w-[359px] h-[40px] rounded-md"
-              placeholder="Enter password here"
-            ></Input>
-          </div>
+         
 
           <Button className="w-[359px] h-[40px] rounded-md">Continue</Button>
         </div>
@@ -76,5 +60,4 @@ router.push("/signup");
   );
 }
 
-export default Login;
-
+export default Signup;

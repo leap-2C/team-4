@@ -1,5 +1,4 @@
 
-
 const bankCardSchema = {
 country : { type : String},
 firstname: { type : String},

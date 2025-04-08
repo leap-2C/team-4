@@ -7,7 +7,7 @@ const userSchema = new Schema({
     username: { type: String },
     receivedDonations: { type: donationsSchema },
     timestamps: { type: Date, default: Date.now },
-    profileId : { Number},
+    profileId : { type: Number},
     bankCard: { type: bankCardSchema }
 });
 export default userSchema ;

@@ -1,8 +1,7 @@
 
-
 const profileSchema = {
-    name : {String},
     about : {String},
+    name : {String},
     avatarImage :{ String},
     SocialMediaURL :{ String},
     backgroundImage :{ String},

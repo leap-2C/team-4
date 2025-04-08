@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <div className="">
       <Header/>
-      <div className="px-[80px] pt-[40px] flex">
+      <div className="px-[80px] pt-[40px] flex gap-[74px]">
         <DashboardSideBar />
         {children}
       </div>

@@ -8,14 +8,16 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
   role      Role     @default(USER)
   password  String 
+  
   bankCard  BankCard[] 
 }
+
 model BankCard{
   id String @id @default(cuid())
   country String 
@@ -24,9 +26,10 @@ model BankCard{
   timeStamp DateTime @default(now())
   expriryDate Int 
   userId String
-
+  
   user User[]
 }
+
 
 enum Role {
   USER

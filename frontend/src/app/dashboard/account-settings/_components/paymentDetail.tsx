@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-function setPassword() {
+function paymentDetails() {
   return (
     <div className="flex flex-col gap-4 border border-[#E4E4E7] rounded-[8px] p-4">
       <p className="font-bold">Payment details</p>
@@ -16,4 +16,4 @@ function setPassword() {
     </div>
   );
 }
-export default setPassword;
+export default paymentDetails;

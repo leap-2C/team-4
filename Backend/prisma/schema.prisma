@@ -13,19 +13,19 @@ model User {
   email     String   @unique
   name      String?
   role      Role     @default(USER)
-  posts     Post[]
   password  String 
+  bankCard  BankCard[] 
 }
+model BankCard{
+  id String @id @default(cuid())
+  country String 
+  firstName String 
+  lastName String 
+  timeStamp DateTime @default(now())
+  expriryDate Int 
+  userId String
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
-  password  String
+  user User[]
 }
 
 enum Role {

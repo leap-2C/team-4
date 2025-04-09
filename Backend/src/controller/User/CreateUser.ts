@@ -20,7 +20,6 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
     });
 
     if (existingUser) {
-    
       res.status(400).json({ message: "Энэ и-мэйл бүртгэлтэй байна." });
       return;
     }

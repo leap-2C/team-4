@@ -52,7 +52,7 @@ function Signup() {
               placeholder="Enter username here"
             ></Input>
           </div>
-          <Button className="w-[359px] h-[40px] rounded-md">Continue</Button>
+          <Button onClick={() => router.push("/complete")} className="w-[359px] h-[40px] rounded-md">Continue</Button>
         </div>
       </div>
   );

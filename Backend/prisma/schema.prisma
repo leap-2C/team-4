@@ -14,8 +14,11 @@ model User {
   name      String?
   role      Role     @default(USER)
   password  String 
+  
+  bankCard  BankCard[] 
 }
-model bankCard{
+
+model BankCard{
   id String @id @default(cuid())
   country String 
   firstName String 
@@ -23,6 +26,8 @@ model bankCard{
   timeStamp DateTime @default(now())
   expriryDate Int 
   userId String
+  
+  user User[]
 }
 
 

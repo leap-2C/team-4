@@ -13,20 +13,44 @@ model User {
   email     String   @unique
   name      String?
   role      Role     @default(USER)
-  password  String 
-  
-  bankCard  BankCard[] 
+  password  String
+  bankCard bankCard[]
+   Profile Profile[]
+  Donation Donation[]
 }
-
-model BankCard{
+model bankCard{
   id String @id @default(cuid())
-  country String 
-  firstName String 
-  lastName String 
+  country String
+  firstName String
+  lastName String
   timeStamp DateTime @default(now())
-  expriryDate Int 
+  expriryDate Int
   userId String
-  
+  user User []
+ 
+}
+ 
+model Profile {
+  id String @id @default(cuid())
+  name String
+  about String
+  avatarImage String
+  socialMediaURL String
+  backgroundImage String
+  successMessage String
+  timestamp DateTime @default(now())
+  user User[]
+ 
+}
+ 
+model Donation {
+  id String @id @default(cuid())
+  amount Int
+  specialMessage String
+  socialURLorBuyMeACoffee String
+  donorId String
+  recipientId String
+  timestamp DateTime @default(now())
   user User[]
 }
 

@@ -17,6 +17,7 @@ model User {
   bankCard bankCard[]
    Profile Profile[]
   Donation Donation[]
+  
 }
 model bankCard{
   id String @id @default(cuid())

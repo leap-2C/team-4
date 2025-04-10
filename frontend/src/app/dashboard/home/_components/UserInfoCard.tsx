@@ -5,6 +5,7 @@ import { Copy } from "lucide-react";
 import { useState } from "react";
 import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Command,
   CommandEmpty,
@@ -43,7 +44,10 @@ function UserInfoCard() {
     <div className=" w-[907px] h-[257px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6 ">
       <div className="w-[859px] h-[48px] flex justify-between ">
         <div className="flex gap-3">
-          <div className="w-[48px] h-[48px] bg-amber-400"></div>
+          <Avatar className="w-[40px] h-[40px]">
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
           <div>
             <p className="text-[16px] font-bold">Jake</p>
             <p className="text-[14px] font-normal">
@@ -95,7 +99,6 @@ function UserInfoCard() {
                             setOpen(false);
                           }}
                         >
-                    
                           {framework.label}
                         </CommandItem>
                       ))}

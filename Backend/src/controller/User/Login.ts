@@ -1,33 +1,42 @@
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { User } from '../../models/User';
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import { PrismaClient } from "@prisma/client";
 
-export const login = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
+import dotenv from "dotenv";
+const prisma = new PrismaClient();
 
-        // Check if user exists
-        const user = await User.findOne({ email });
-        if (!user) {
-            res.status(404).json({ message: 'User not found' });
-            return;
-        }
+dotenv.config();
 
-        // Validate password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            res.status(401).json({ message: 'Invalid credentials' });
-            return;
-        }
 
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET as string, {
-            expiresIn: '1h',
-        });
+const login = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
 
-        res.status(200).json({ message: 'Login successful', token });
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error', error: error.message });
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
     }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
+export default login;

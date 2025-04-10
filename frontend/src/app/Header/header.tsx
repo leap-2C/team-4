@@ -6,7 +6,7 @@ const Header = () => {
     const router = useRouter();
     return (
         <div className='h-[56px] w-full flex  flex-row items-center justify-between px-[7%] bg-[#F5F5F5]'>
-            <button onClick={()=>router.replace("/home")} className="flex gap-2 items-center ">
+            <button onClick={()=>router.push("/dashboard/home")} className="flex gap-2 items-center ">
                 <div>
                     <Coffee className="w-[20px] h-[20px]" />
                 </div>

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import { Camera } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -99,6 +100,23 @@ const Complete = () => {
   const handleSubmit = () => {
     alert("Form submitted");
   };
+    const [image, setImage] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+  
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  
+    const triggerFileInput = () => {
+      fileInputRef.current?.click();
+    };
 
   return (
     <div className="w-screen h-[90%] flex justify-center items-center">
@@ -108,10 +126,26 @@ const Complete = () => {
             <p className="text-[24px] font-[600] line-weight-[32px]">Complete your profile page</p>
             <div className="gap-[8px] flex flex-col">
               <p>Add photo</p>
-              <Avatar className="h-[160px] w-[160px]">
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
+              <Avatar
+                className="w-[160px] h-[160px] cursor-pointer hover:opacity-80 transition flex items-center justify-center relative"
+                onClick={triggerFileInput}
+              >
+                <Camera className="absolute opacity-[0.2] w-10 h-10" />
+                <AvatarImage
+                  src={
+                    image ||
+                    "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png"
+                  }
+                />
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
+              <Input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                className="hidden"
+              />
             </div>
           </div>
           <div className="flex flex-col gap-[12px]">

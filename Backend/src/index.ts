@@ -1,6 +1,11 @@
 import express, { Router } from "express";
 import { userRouter } from "./routers/User-router";
 
+import dotenv from "dotenv"; 
+
+
+dotenv.config();
+
 const app = express();
 const port = 3000;
 

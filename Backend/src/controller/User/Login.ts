@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 
 
 
+
 const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -32,7 +33,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         expiresIn: "1h",
       }
     );
-
+     
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.log("Error:", error);

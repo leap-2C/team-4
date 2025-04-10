@@ -2,12 +2,10 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
-
-
+import dotenv from "dotenv";
 const prisma = new PrismaClient();
 
-
-
+dotenv.config();
 
 
 const login = async (req: Request, res: Response): Promise<void> => {
@@ -33,7 +31,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         expiresIn: "1h",
       }
     );
-     
+
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.log("Error:", error);

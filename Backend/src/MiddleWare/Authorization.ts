@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 
-// Extend the Request interface to include the user property
+
 declare global {
   namespace Express {
     interface Request {

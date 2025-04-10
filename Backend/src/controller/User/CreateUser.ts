@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -24,11 +25,13 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await prisma.user.create({
       data: {
         email,
         name,
-        password,
+        password: hashedPassword,
       },
     });
 

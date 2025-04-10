@@ -13,7 +13,7 @@ function DashboardSideBar() {
     router.push("/dashboard/explore");
   };
   const handleViewPageClick = () => {
-    router.push("/dashboard/view-page");
+    router.push("/view-page");
   };
   const handleAccountSettingsClick = () => {
     router.push("/dashboard/account-settings");

@@ -8,4 +8,4 @@ export const userRouter = express.Router();
 
 userRouter.post("/", createUser);
 userRouter.get("/login", login);
-userRouter.delete("/:id", deleteUser,);
+userRouter.delete("/:id", Authorization , deleteUser,);

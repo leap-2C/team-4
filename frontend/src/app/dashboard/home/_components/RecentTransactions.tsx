@@ -5,6 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 
 function RecentTransactions() {
@@ -43,7 +44,13 @@ function RecentTransactions() {
         <div className="p-3  flex flex-col gap-[16px] ">
           <div className="w-[835px] h-[40px] flex justify-between">
             <div className="flex gap-3">
-              <div className="w-[40px] h-[40px] bg-amber-400"></div>
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div>
                 <p className="text-[14px] font-medium">Jake</p>
                 <p className="text-[12px] font-normal">

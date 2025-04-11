@@ -6,22 +6,32 @@ dotenv.config();
 
 const SECRET_KEY = process.env.JWT_SECRET as string;
 
-export const Authorization = (req: Request, res: Response, next: NextFunction): void => {
+export const Authorization = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const token = req.headers.authorization;
 
+  console.log("token", token);
+
   if (!token) {
-     res.status(401).json({ message: "Unauthorized" });
-     return;
+    res.status(401).json({ message: "Unauthorized" });
+    return;
   }
 
   const tokenValue = token.split(" ")[1];
-  
 
   try {
-    const user = jwt.verify(tokenValue, SECRET_KEY) as { id: string; email: string };
-    (req as any).user = user; 
+    const user = jwt.verify(tokenValue, SECRET_KEY) as {
+      id: string;
+      email: string;
+    };
+    (req as any).user = user;
     next();
   } catch (error) {
-     res.status(401).json({ message: "Unauthorized" });
+    console.log("error", error);
+
+    res.status(401).json({ message: "Unauthorized" });
   }
 };

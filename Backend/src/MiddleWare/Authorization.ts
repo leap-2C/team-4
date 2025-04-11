@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY as string;
+const SECRET_KEY = process.env.JWT_SECRET as string;
 
 export const Authorization = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization;

@@ -16,6 +16,7 @@ app.use(express.json());
 
 
 app.use("/users", userRouter);
+app.use("/profile", userRouter);
 
 
 app.listen(port, () => {

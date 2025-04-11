@@ -1,9 +1,9 @@
 import express, { Router } from "express";
 import { userRouter } from "./routers/User-router";
+import Bankrouter from "./routers/Bank-router";
+import  Donation from "./routers/Donation-router"
 
-import dotenv from "dotenv"; 
-
-
+import dotenv from "dotenv";
 
 
 dotenv.config();
@@ -13,9 +13,9 @@ const port = 3000;
 
 app.use(express.json());
 
-
 app.use("/users", userRouter);
-app.use("/profile", userRouter);
+app.use("/bank-card", Bankrouter);
+app.use("/donation", Donation);
 
 
 app.listen(port, () => {

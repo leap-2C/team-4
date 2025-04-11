@@ -26,9 +26,8 @@ model bankCard{
   lastName String
   timeStamp DateTime @default(now())
   expriryDate Int
-  userId String
-  user User []
- 
+  userId String 
+  user   User   @relation(fields: [userId], references: [id])
 }
  
 model Profile {

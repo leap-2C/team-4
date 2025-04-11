@@ -3,10 +3,10 @@ import getCards from "../controller/Bank-Card/GetCards";
 import createCard from "../controller/Bank-Card/CreateCard";
 import updateCard from "../controller/Bank-Card/UpdateCard";
 
-const router = express.Router();
+const Bankrouter = express.Router();
 
-router.get("/:userId", getCards);
-router.post("/:userId", createCard);
-router.patch("/:bankCardId", updateCard);
+Bankrouter.get("/:userId", getCards);
+Bankrouter.post("/:userId", createCard);
+Bankrouter.patch("/:bankCardId", updateCard);
 
-export default router;
+export default Bankrouter;

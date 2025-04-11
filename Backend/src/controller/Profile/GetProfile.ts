@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../../utils/PrismaClient";
 
 export const getProfile = async (req: any, res: any): Promise<void> => {
   const { id } = req.params;
   try {
-    const profile = await prisma.profile.findUnique(id)
+    const profile = await prisma.profile.findUnique(id);
     if (!profile) {
       res.status(404).json({ message: "Profile not found." });
       return;

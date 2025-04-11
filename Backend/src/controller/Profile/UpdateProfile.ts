@@ -1,11 +1,12 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../../utils/PrismaClient";
 import { Request, Response } from "express";
 
- export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+export const updateProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const {id,  name, about, avatarImage } = req.body;
+    const { id, name, about, avatarImage } = req.body;
 
     if (!name) {
       res.status(400).json({ message: "User ID is required." });
@@ -20,7 +21,7 @@ import { Request, Response } from "express";
         id,
         name,
         about,
-        avatarImage
+        avatarImage,
       },
     });
 

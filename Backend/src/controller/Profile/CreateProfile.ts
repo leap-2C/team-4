@@ -7,7 +7,7 @@ export const createProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id, name, about, avatarImage , socialMediaURL , backgroundImage, succesMessage } = req.body;
+    const { id, name, about, avatarImage , socialMediaURL , backgroundImage, successMessage } = req.body;
 
     if (!id || !name) {
       res.status(400).json({ message: "User ID, and name are required." });
@@ -15,9 +15,6 @@ export const createProfile = async (
     }
 
     const newProfile = await prisma.profile.create({
-      where: {
-        id: req.params.id,
-      },
       data: {
         id,
         name,
@@ -25,7 +22,7 @@ export const createProfile = async (
         avatarImage,
         socialMediaURL,
         backgroundImage,
-        succesMessage
+        successMessage
       },
     });
 

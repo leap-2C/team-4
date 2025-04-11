@@ -4,11 +4,11 @@ import getReceivedDonations from "../controller/Donation/received";
 import getTotalEarnings from "../controller/Donation/total-earnings";
 import searchDonations from "../controller/Donation/search-donations";
 
-const router = express.Router();
+const Donationrouter = express.Router();
 
-router.post("/create-donation", createDonation);
-router.get("/received/:userId", getReceivedDonations);
-router.get("/total-earnings/:userId", getTotalEarnings);
-router.get("/search-donations/:userId", searchDonations);
+Donationrouter.post("/create-donation", createDonation);
+Donationrouter.get("/received/:userId", getReceivedDonations);
+Donationrouter.get("/total-earnings/:userId", getTotalEarnings);
+Donationrouter.get("/search-donations/:userId", searchDonations);
 
-export default router;
+export default Donationrouter;

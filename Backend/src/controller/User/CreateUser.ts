@@ -1,7 +1,7 @@
 import prisma from "../../utils/PrismaClient";
-import dotenv from "dotenv";
+
 import bcrypt from "bcrypt";
-dotenv.config();
+
 
 import { Request, Response } from "express";
 

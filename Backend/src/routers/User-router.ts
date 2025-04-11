@@ -7,9 +7,6 @@ import updateUser from "../controller/User/UpdateUser";
 
 import { Authorization } from "../MiddleWare/Authorization";
 
-
-
-
 export const userRouter = express.Router();
 
 userRouter.post("/", createUser);

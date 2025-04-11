@@ -21,7 +21,6 @@ function Login() {
   const handleContinueButton = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Email validation
     if (email === "") {
       setEmailError("Emailaa hiide bandia");
     } else if (!emailRegex.test(email)) {
@@ -30,7 +29,6 @@ function Login() {
       setEmailError(""); 
     }
 
-    // Password validation
     if (password === "") {
       setPasswordError("Passwordaa hiide bandia");
     } else if (!passwordRegex.test(password)) {

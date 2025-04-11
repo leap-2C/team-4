@@ -6,7 +6,7 @@ export const updateProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id, name, about, avatarImage , socialMediaURL , backgroundImage ,succesMessage  } = req.body;
+    const { id, name, about, avatarImage , socialMediaURL , backgroundImage , successMessage  } = req.body;
 
     if (!name) {
       res.status(400).json({ message: "User ID is required." });
@@ -24,7 +24,7 @@ export const updateProfile = async (
         avatarImage,
         socialMediaURL,
         backgroundImage,
-        succesMessage
+        successMessage
       },
     });
 

@@ -7,7 +7,7 @@ export const createProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id, name, about, avatarImage } = req.body;
+    const { id, name, about, avatarImage , socialMediaURL , backgroundImage, succesMessage } = req.body;
 
     if (!id || !name) {
       res.status(400).json({ message: "User ID, and name are required." });
@@ -23,6 +23,9 @@ export const createProfile = async (
         name,
         about,
         avatarImage,
+        socialMediaURL,
+        backgroundImage,
+        succesMessage
       },
     });
 

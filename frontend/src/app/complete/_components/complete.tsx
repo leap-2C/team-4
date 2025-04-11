@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Camera } from "lucide-react";
+import { Coffee } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import {
   Avatar,
   AvatarFallback,
@@ -31,6 +33,7 @@ type CountryOption = {
 };
 
 const Complete = () => {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [openCountry, setOpenCountry] = useState(false);
   const [openMonth, setOpenMonth] = useState(false);
@@ -119,7 +122,19 @@ const Complete = () => {
     };
 
   return (
-    <div className="w-screen h-[90%] flex justify-center items-center">
+    <div className="w-screen h-screen flex items-center flex-col">
+        <div className='h-[56px] w-full flex  flex-row items-center justify-between px-[80px] bg-white'>
+            <button onClick={()=>router.push("/dashboard/home")} className="flex gap-2 items-center ">
+                <div>
+                    <Coffee className="w-[20px] h-[20px]" />
+                </div>
+                <p className="text-[16px] font-bold">Buy Me Coffee</p>
+            </button>
+            <div className='flex gap-3 items-center'>
+              <Button>Log out</Button>
+            </div>
+        </div>
+        <div className="flex justify-center items-center w-full h-full">
       {step === 1 && (
         <div className="w-[510px] gap-[24px] flex flex-col">
           <div className="flex flex-col gap-[24px]">
@@ -346,7 +361,9 @@ const Complete = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
+    
   );
 };
 

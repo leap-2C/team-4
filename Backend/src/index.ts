@@ -1,11 +1,10 @@
 import express, { Router } from "express";
 import { userRouter } from "./routers/User-router";
-import { PrismaClient } from "@prisma/client";
 
 import dotenv from "dotenv"; 
 
 
-const prisma = new PrismaClient();
+
 
 dotenv.config();
 

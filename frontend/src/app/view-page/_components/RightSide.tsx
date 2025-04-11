@@ -27,7 +27,7 @@ function RightSide() {
                     </div>
                     <div className='flex flex-col gap-[8px]'>
                         <p>Special message:</p>
-                        <Input className='h-[131px]' placeholder='Please write your message here'/>
+                        <Input className='h-[131px]' placeholder='Please write your message here' />
                     </div>
                 </div>
                 <div>

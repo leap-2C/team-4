@@ -6,12 +6,18 @@ import RightSide from "./_components/RightSide";
 
 function viewPage() {
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-screen h-screen flex flex-col items-center">
       <Header />
-      <CoverPictureStyle />
-      <div className="absolute top-[20%] w-[100%] z-30 flex gap-[24px] justify-center">
-        <LeftEditSide />
-        <RightSide />
+      <div className="z-0">
+        <CoverPictureStyle />
+      </div>
+      <div className="absolute top-[320px] flex gap-[24px] justify-center ">
+        <div className="bg-white rounded-lg">
+          <LeftEditSide />
+        </div>
+        <div className="bg-white rounded-lg">
+          <RightSide />
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+
 import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
+import prisma from "../../utils/PrismaClient";
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {

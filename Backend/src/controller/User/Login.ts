@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+
 import dotenv from "dotenv";
-const prisma = new PrismaClient();
+
+import prisma from "../../utils/PrismaClient";
+
 
 dotenv.config();
 

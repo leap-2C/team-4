@@ -23,9 +23,9 @@ function CoverPictureStyle() {
   };
 
   return (
-    <div className="w-full h-[320px] relative z-0 ">
+    <div className="w-screen h-[320px] relative z-0">
       {image ? (
-        <Image src={image} alt="" fill className="object-cover" />
+        <Image src={image} alt="" fill className="object-cover z-0" />
       ) : (
         <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-xl">
           No Cover Image

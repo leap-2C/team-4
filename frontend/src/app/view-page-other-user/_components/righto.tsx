@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
 function Rightside() {
     return (
-        <div className="border-[1px] rounded-lg w-[682px]">
+        <div className="border-[1px] rounded-lg w-[682px] bg-[white] rounded-lg">
             <div className='flex flex-col gap-[32px] p-[24px]'>
                 <div className='flex flex-col gap-[24px]'>
                     <p className='text-[24px] font-[600] line-height-[32px]'>Buy Jake a Coffee</p>

@@ -40,7 +40,263 @@ function RecentTransactions() {
           </Popover>
         </div>
       </div>
-      <div className="p-6 border-[1px] border-gray-300 rounded-[8px]">
+      <div className="p-6 border-[1px] border-gray-300 rounded-[8px] max-h-[500px] overflow-y-auto">
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
+        <div className="p-3  flex flex-col gap-[16px] ">
+          <div className="w-[835px] h-[40px] flex justify-between">
+            <div className="flex gap-3">
+              <Avatar className="w-[40px] h-[40px]">
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-[14px] font-medium">Jake</p>
+                <p className="text-[12px] font-normal">
+                  buymeacoffee.com/baconpancakes1
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[16px] font-bold">+ $1</p>
+              <p className="text-[12px] font-normal text-gray-400">
+                10 hours ago
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-[14px] font-normal">
+              Thank you for being so awesome everyday! You always manage to
+              brighten up my day when I’m feeling down. Although $1 isn’t that
+              much money it’s all I can contribute at the moment{" "}
+            </p>
+          </div>
+        </div>
         <div className="p-3  flex flex-col gap-[16px] ">
           <div className="w-[835px] h-[40px] flex justify-between">
             <div className="flex gap-3">

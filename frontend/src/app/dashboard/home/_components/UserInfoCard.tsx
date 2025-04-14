@@ -41,7 +41,7 @@ function UserInfoCard() {
   const [value, setValue] = React.useState("");
 
   return (
-    <div className=" w-[907px] h-[257px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6 ">
+    <div className=" w-[907px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6 ">
       <div className="w-[859px] h-[48px] flex justify-between ">
         <div className="flex gap-3">
           <Avatar className="w-[40px] h-[40px]">

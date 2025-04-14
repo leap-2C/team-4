@@ -33,7 +33,7 @@ function Leftside() {
           fileInputRef.current?.click();
         };
   return (
-    <div className="flex flex-col w-[682px] justify-center items-center gap-[24px] ">
+    <div className="flex flex-col w-[682px] justify-center items-center gap-[24px] bg-[white] rounded-lg">
         <div className="border-[1px] rounded-lg gap-[8px] flex flex-col justify-center items-center w-[100%] p-[24px]">
             <div className="flex justify-between items-center w-[584px] h-[48px]">
                 <div className="flex h-[24px] gap-[12px] justify-between justify-center items-center">

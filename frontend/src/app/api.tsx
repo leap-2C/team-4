@@ -7,6 +7,15 @@ interface User {
   password: string;
   name: string;
 }
+interface UserProfile {
+    id: string;
+  name: string;
+  about: string;
+  AvatarImage: string;
+  socialMediaURL: string;
+  backgroundImage: string;
+    successMessage: string;  
+}
 
 export const signUp = async (data: User) => {
   try {
@@ -32,3 +41,14 @@ export const login = async (data: { email: string; password: string }) => {
     throw new Error(error.response?.data?.message || "Login failed");
   }
 };
+export const createUserProfile = async ( data: UserProfile) => {
+    try {
+        const response = await axios.post(`${API_URL}/profile`, data);
+        if (!response.data) {
+            throw new Error("Profile creation failed!");
+        }
+        return response.data;
+    }   catch (error: any) {
+        throw new Error(error.response?.data?.message || "Profile creation failed");
+    }
+}

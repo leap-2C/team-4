@@ -36,7 +36,7 @@ function LeftEditSide() {
     <div className="flex flex-col w-[682px] justify-center items-center gap-[24px] ">
         <div className="border-[1px] rounded-lg gap-[8px] flex flex-col justify-center items-center w-[100%] p-[24px]">
             <div className="flex justify-between items-center w-[584px] h-[48px]">
-                <div className="flex h-[24px] gap-[12px] justify-between justify-center items-center">
+                <div className="flex h-[24px] gap-[12px] justify-between items-center">
                     <div>
                         <Avatar className="h-[48px] w-[48px]">
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />

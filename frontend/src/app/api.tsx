@@ -16,7 +16,18 @@ interface UserProfile {
   backgroundImage: string;
   successMessage: string;
 }
- 
+
+
+
+interface PaymentDetails {
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  cardHolderName: string;
+  country: string;
+}
+
+
 export const signUp = async (data: User) => {
   try {
     const response = await axios.post(`${API_URL}/users`, data);
@@ -57,4 +68,17 @@ export const createUserProfile = async (data: UserProfile) => {
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Profile creation failed");
   }
+
 };
+export const createpaymentDetails = async (data: PaymentDetails) => {
+  try {
+    const response = await axios.patch(`${API_URL}/`, data);
+    if (!response.data) {
+      throw new Error("Payment detail creation failed!");
+    }
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Payment detail creation failed");
+  }
+};
+

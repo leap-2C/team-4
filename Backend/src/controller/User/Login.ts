@@ -33,8 +33,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         expiresIn: "1h",
       }
     );
-
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token, userId: user.id });
   } catch (error) {
     console.log("Error:", error);
     res.status(500).json({ message: "Server error" });

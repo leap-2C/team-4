@@ -42,10 +42,8 @@ const Complete = () => {
   const [openCountry, setOpenCountry] = useState(false);
   const [openMonth, setOpenMonth] = useState(false);
   const [openYear, setOpenYear] = useState(false);
-
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [socialMediaURL, setSocialMediaURL] = useState("");
@@ -118,28 +116,57 @@ const Complete = () => {
   };
 
   const handleNextStep = () => {
+    if (!name || !about || !socialMediaURL) {
+      alert("Please fill in all fields");
+      return;
+    }
+    if (!image) {
+      alert("Please upload an image");
+      return;
+    }
     setStep(2);
   };
 
-  const handleSubmitProfile = async () => {
-    try {
-      const userId = "1234"; // Replace with real user ID logic if available
+  const handleBackStep = () => {
+    setStep(1);
+  };
 
+  const handleSubmitProfile = async () => {
+    const missingFields = [];
+    if (!value) missingFields.push("country");
+    if (!firstName) missingFields.push("first name");
+    if (!lastName) missingFields.push("last name");
+    if (!cardNumber) missingFields.push("card number");
+    if (!month) missingFields.push("month");
+    if (!year) missingFields.push("year");
+    if (!cvc) missingFields.push("CVC");
+    if (missingFields.length > 0) {
+      console.log("Missing fields:", missingFields);
+      alert(`Please fill in: ${missingFields.join(", ")}`);
+      return;
+    }
+
+    try {
+      const userId = localStorage.getItem("userId");
+      console.log("userId from localStorage:", userId);
+      if (!userId) {
+        throw new Error("User ID not found. Please log in again.");
+      }
       const userProfile = {
         id: userId,
-        name: name,
-        about: about,
+        name,
+        about,
         AvatarImage: image || "",
-        socialMediaURL: socialMediaURL,
+        socialMediaURL,
         backgroundImage: "",
         successMessage: "Profile created successfully!",
       };
-
+      console.log("Sending userProfile:", userProfile);
       await createUserProfile(userProfile);
       router.push("/dashboard/home");
-    } catch (error) {
-      console.error("Failed to create profile", error);
-      alert("Failed to create profile");
+    } catch (error: any) {
+      console.error("Profile creation error:", error);
+      alert(error.message || "Failed to create profile");
     }
   };
 
@@ -151,7 +178,9 @@ const Complete = () => {
           <p className="text-[16px] font-bold">Buy Me Coffee</p>
         </button>
         <div className="flex gap-3 items-center">
-          <Button>Log out</Button>
+          <Button onClick={() => { localStorage.removeItem("token"); localStorage.removeItem("userId"); router.push("/login"); }}>
+            Log out
+          </Button>
         </div>
       </div>
 
@@ -196,12 +225,11 @@ const Complete = () => {
               </div>
               <div>
                 <p>About</p>
-                <Input
+                <textarea
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
-                  className="h-[131px]"
-                  type="text"
                   placeholder="Write about yourself here"
+                  className="h-[131px] w-full border-[2px] rounded-lg p-[12px]"
                 />
               </div>
               <div>
@@ -217,7 +245,7 @@ const Complete = () => {
             </div>
 
             <div className="flex justify-end">
-              <Button onClick={handleNextStep} className="w-[246px] h-[40px] bg-secondary text-white">
+              <Button onClick={handleNextStep} className="w-[246px] h-[40px]">
                 Continue
               </Button>
             </div>
@@ -266,94 +294,114 @@ const Complete = () => {
             </div>
 
             <div className="flex gap-2">
+              <div className="w-[100%]">
+                <p>First name</p>
+                <Input
+                  className="h-[40px] w-[100%]"
+                  type="text"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              <div className="w-[100%]">
+                <p>Last name</p>
+                <Input
+                  className="h-[40px] w-[100%]"
+                  type="text"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="">
+              <p>Enter card number</p>
               <Input
-                className="h-[40px] w-1/2"
                 type="text"
-                placeholder="First name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <Input
-                className="h-[40px] w-1/2"
-                type="text"
-                placeholder="Last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                inputMode="numeric"
+                value={cardNumber}
+                onChange={handleCardNumberChange}
+                className="w-full mt-2"
+                placeholder="XXXX XXXX XXXX XXXX"
+                maxLength={19}
               />
             </div>
 
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={cardNumber}
-              onChange={handleCardNumberChange}
-              className="w-full mt-2"
-              placeholder="XXXX XXXX XXXX XXXX"
-              maxLength={19}
-            />
+            <div className="flex gap-[16px] justify-between">
+              <div>
+                <p>Expires</p>
+                <Popover open={openMonth} onOpenChange={setOpenMonth}>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-[160px]">
+                      {month ? months.find((m) => m.value === month)?.label : "Select month..."}
+                      <ChevronsUpDown className="ml-2 h-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandList>
+                        <CommandGroup>
+                          {months.map((monthItem) => (
+                            <CommandItem
+                              key={monthItem.value}
+                              onSelect={() => {
+                                setMonth(monthItem.value);
+                                setOpenMonth(false);
+                              }}
+                            >
+                              {monthItem.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-            <div className="flex gap-2">
-              <Popover open={openMonth} onOpenChange={setOpenMonth}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full">
-                    {month ? months.find((m) => m.value === month)?.label : "Select month..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandList>
-                      <CommandGroup>
-                        {months.map((monthItem) => (
-                          <CommandItem
-                            key={monthItem.value}
-                            onSelect={() => {
-                              setMonth(monthItem.value);
-                              setOpenMonth(false);
-                            }}
-                          >
-                            {monthItem.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <div>
+                <p>Year</p>
+                <Popover open={openYear} onOpenChange={setOpenYear}>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-[160px]">
+                      {year || "Select year..."}
+                      <ChevronsUpDown className="ml-2 h-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandList>
+                        <CommandGroup>
+                          {years.map((yearItem) => (
+                            <CommandItem key={yearItem} onSelect={() => handleYearSelect(yearItem.toString())}>
+                              {yearItem}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-              <Popover open={openYear} onOpenChange={setOpenYear}>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full">
-                    {year || "Select year..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandList>
-                      <CommandGroup>
-                        {years.map((yearItem) => (
-                          <CommandItem key={yearItem} onSelect={() => handleYearSelect(yearItem.toString())}>
-                            {yearItem}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-
-              <Input
-                className="h-[36px] w-[100px]"
-                type="text"
-                placeholder="CVC"
-                value={cvc}
-                onChange={(e) => setCvc(e.target.value)}
-              />
+              <div>
+                <p>CVC</p>
+                <Input
+                  className="h-[36px]"
+                  type="text"
+                  placeholder="CVC"
+                  value={cvc}
+                  onChange={(e) => setCvc(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className="flex justify-end">
-              <Button onClick={handleSubmitProfile} className="w-[246px] h-[40px] bg-secondary text-white">
+            <div className="flex justify-between">
+              <Button className="h-[40px] w-[246px]" onClick={handleBackStep}>
+                Back
+              </Button>
+              <Button onClick={handleSubmitProfile} className="h-[40px] w-[246px]">
                 Continue
               </Button>
             </div>

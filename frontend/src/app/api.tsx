@@ -16,6 +16,8 @@ interface UserProfile {
   backgroundImage: string;
   successMessage: string;
 }
+
+
 interface PaymentDetails {
   cardNumber: string;
   expiryDate: string;
@@ -59,8 +61,6 @@ export const createUserProfile = async (data: UserProfile) => {
     throw new Error(error.response?.data?.message || "Profile creation failed");
   }
 };
-
-
 export const createpaymentDetails = async (data: PaymentDetails) => {
   try {
     const response = await axios.patch(`${API_URL}/`, data);

@@ -5,9 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -18,14 +16,19 @@ import {
 } from "@/components/ui/popover";
 
 type CountryOption = {
-  value: string;
+  value: string;  
   label: string;
 };
 
-function selectCountry() {
+type SelectCountryProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+function SelectCountry({ value, onChange }: SelectCountryProps) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
   const [countries, setCountries] = useState<CountryOption[]>([]);
+
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -33,13 +36,10 @@ function selectCountry() {
         const data = await res.json();
         const countryOptions: CountryOption[] = data
           .map((country: any) => ({
-            value:
-              country.cca2?.toLowerCase() || country.name.common.toLowerCase(),
+            value: country.name.common, 
             label: country.name.common,
           }))
-          .sort((a: CountryOption, b: CountryOption) =>
-            a.label.localeCompare(b.label)
-          );
+          .sort((a: CountryOption, b: CountryOption) => a.label.localeCompare(b.label));
         setCountries(countryOptions);
       } catch (error) {
         console.error("Failed to fetch countries", error);
@@ -57,24 +57,19 @@ function selectCountry() {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? countries.find((country) => country.value === value)?.label
-            : "Select country..."}
+          {value || "Select country..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 max-h-[300px] overflow-y-auto">
         <Command>
-          <CommandInput placeholder="Search country..." />
           <CommandList>
-            <CommandEmpty>No country found.</CommandEmpty>
             <CommandGroup>
               {countries.map((country) => (
                 <CommandItem
                   key={country.value}
-                  value={country.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
+                  onSelect={() => {
+                    onChange(country.value); 
                     setOpen(false);
                   }}
                 >
@@ -94,4 +89,5 @@ function selectCountry() {
     </Popover>
   );
 }
-export default selectCountry;
+
+export default SelectCountry;

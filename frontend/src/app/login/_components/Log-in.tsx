@@ -1,77 +1,100 @@
 "use client";
 
 import React, { useState } from "react";
-import { Coffee } from "lucide-react";
+import { Coffee, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { login } from "@/app/api";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>(""); 
-  const [passwordError, setPasswordError] = useState<string>(""); 
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [serverError, setServerError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; 
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
   const router = useRouter();
 
-  const handleContinueButton = (e: React.FormEvent) => {
+  const handleContinueButton = async (e: React.FormEvent) => {
     e.preventDefault();
+    let hasError = false;
+    setServerError("");
+    setLoading(true);
 
-    if (email === "") {
-      setEmailError("Emailaa hiide bandia");
+    if (email.trim() === "") {
+      setEmailError("Email-ээ оруулна уу");
+      hasError = true;
     } else if (!emailRegex.test(email)) {
-      setEmailError("Please enter a valid email address");
+      setEmailError("Зөв и-мэйл хаяг оруулна уу");
+      hasError = true;
     } else {
-      setEmailError(""); 
+      setEmailError("");
     }
 
-    if (password === "") {
-      setPasswordError("Passwordaa hiide bandia");
+    if (password.trim() === "") {
+      setPasswordError("Нууц үгээ оруулна уу");
+      hasError = true;
     } else if (!passwordRegex.test(password)) {
       setPasswordError(
-        "Password must be at least 8 characters long, include a number, an uppercase and a lowercase letter."
+        "Нууц үг дор хаяж 8 тэмдэгттэй, том жижиг үсэг болон тоо агуулсан байх ёстой"
       );
+      hasError = true;
     } else {
-      setPasswordError(""); 
+      setPasswordError("");
     }
 
-    if (email && password && !emailError && !passwordError) {
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await login({ email, password });
+      console.log(response);
+      
       router.push("/dashboard/home");
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        setServerError(error.response.data.message);
+      } else {
+        setServerError("Имэйл эсвэл нууц үг буруу байна");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSignUpButton = () => {
+  const handleLoginButton = () => {
     router.push("/signup");
   };
 
   const handleFocus = () => {
     setEmailError("");
     setPasswordError("");
+    setServerError("");
   };
 
   return (
     <div className="w-screen h-screen flex">
       <div className="w-[50%] h-full bg-amber-400 flex flex-col items-center justify-center">
         <div className="flex gap-2 items-center absolute top-[32px] left-[80px]">
-          <div>
-            <Coffee className="w-[20px] h-[20px]" />
-          </div>
+          <Coffee className="w-[20px] h-[20px]" />
           <p className="text-[16px] font-bold">Buy Me Coffee</p>
         </div>
         <div className="w-[455px] h-[370px] flex flex-col items-center gap-10">
-          <div className="">
-            <Image
-              src="/coffe.png"
-              alt="login"
-              width={240}
-              height={240}
-              className="w-[240px] h-[240px] object-cover"
-            />
-          </div>
+          <Image
+            src="/coffe.png"
+            alt="login"
+            width={240}
+            height={240}
+            className="w-[240px] h-[240px] object-cover"
+          />
           <div className="flex flex-col gap-3 items-center">
             <p className="font-bold text-[24px]">Fund your creative work</p>
             <p className="font-normal text-[16px] text-center">
@@ -83,7 +106,7 @@ function Login() {
       </div>
       <div className="w-[50%] h-full bg-white flex flex-col items-center justify-center ">
         <Button
-          onClick={handleSignUpButton}
+          onClick={handleLoginButton}
           className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]"
         >
           Sign up
@@ -92,7 +115,6 @@ function Login() {
           Welcome back
         </p>
         <div className="w-[407px] h-[304px] p-[24px] pt-0">
-
           <div className="flex flex-col gap-2 mb-3">
             <p className="text-[14px] font-medium">Email</p>
             <Input
@@ -102,11 +124,10 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
               onFocus={handleFocus}
             />
-       
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           </div>
-  
-          <div className="flex flex-col gap-2 mb-6">
+
+          <div className="flex flex-col gap-2 mb-3">
             <p className="text-[14px] font-medium">Password</p>
             <Input
               className="w-[359px] h-[40px] rounded-md"
@@ -114,19 +135,32 @@ function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={handleFocus} 
+              onFocus={handleFocus}
             />
-     
             {passwordError && (
               <p className="text-red-500 text-sm">{passwordError}</p>
             )}
           </div>
 
+          {serverError && (
+            <p className="text-red-500 text-sm text-center mb-3">
+              {serverError}
+            </p>
+          )}
+
           <Button
             onClick={handleContinueButton}
             className="w-[359px] h-[40px] rounded-md"
+            disabled={loading}
           >
-            Continue
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Loading...
+              </div>
+            ) : (
+              "Continue"
+            )}
           </Button>
         </div>
       </div>

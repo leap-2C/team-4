@@ -10,7 +10,6 @@ import { signUp } from "@/app/api";
 
 function Signup() {
   const router = useRouter();
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +20,7 @@ function Signup() {
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -28,27 +28,28 @@ function Signup() {
   const handleSignup = async () => {
     let valid = true;
     const newErrors = { email: "", password: "", confirmPassword: "" };
-
+  
     if (!emailRegex.test(email)) {
       newErrors.email = "Please enter a valid email address.";
       valid = false;
     }
-
+  
     if (!passwordRegex.test(password)) {
       newErrors.password =
         "Password must be at least 6 characters with a letter and a number.";
       valid = false;
     }
-
+  
     if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
       valid = false;
     }
-
+  
     setErrors(newErrors);
     setSuccessMessage("");
-
+  
     if (valid) {
+      setLoading(true); 
       try {
         const response = await signUp({
           name: username,
@@ -62,11 +63,20 @@ function Signup() {
           ...prev,
           email: error.message || "Signup failed. Please try again.",
         }));
+      } finally {
+        setLoading(false);
       }
     }
   };
+  
 
   return (
+    <>
+    {loading && (
+      <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
+        <div className="text-lg font-medium">Creating your account...</div>
+      </div>
+    )}
     <div className="w-screen h-screen flex">
       <div className="w-[50%] h-full bg-amber-400 flex flex-col items-center justify-center">
         <div className="flex gap-2 items-center absolute top-[32px] left-[80px]">
@@ -178,7 +188,9 @@ function Signup() {
         </Button>
       </div>
     </div>
+    </>
   );
+  
 }
 
 export default Signup;

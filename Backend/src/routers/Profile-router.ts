@@ -6,6 +6,6 @@ import { Authorization } from '../MiddleWare/Authorization';
 
 export const profileRouter = express.Router();
 
-profileRouter.post('/', Authorization, createProfile);
+profileRouter.post('/', createProfile);
 profileRouter.get('/', Authorization, getProfile);
 profileRouter.put('/', Authorization, updateProfile); 

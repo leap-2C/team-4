@@ -16,22 +16,18 @@ interface UserProfile {
   backgroundImage: string;
   successMessage: string;
 }
-interface PaymentDetails {
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
-  cardHolderName: string;
-  country: string;
-}
+ 
 export const signUp = async (data: User) => {
   try {
     const response = await axios.post(`${API_URL}/users`, data);
-    if (!response.data) {
-      throw new Error("Signup failed !");
+    if (!response.data || !response.data.id) {
+      throw new Error("Signup failed: No user data returned");
     }
+    localStorage.setItem("userId", response.data.id);
+    localStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Signup failed catch");
+    throw new Error(error.response?.data?.message || "Signup failed");
   }
 };
 
@@ -50,25 +46,15 @@ export const login = async (data: { email: string; password: string }) => {
 };
 export const createUserProfile = async (data: UserProfile) => {
   try {
-    const response = await axios.post(`${API_URL}/profile`, data);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(`${API_URL}/profile`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.data) {
       throw new Error("Profile creation failed!");
     }
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Profile creation failed");
-  }
-};
-
-
-export const createpaymentDetails = async (data: PaymentDetails) => {
-  try {
-    const response = await axios.patch(`${API_URL}/`, data);
-    if (!response.data) {
-      throw new Error("Payment detail creation failed!");
-    }
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Payment detail creation failed");
   }
 };

@@ -36,7 +36,7 @@ function Signup() {
   
     if (!passwordRegex.test(password)) {
       newErrors.password =
-        "Password must be at least 6 characters with a letter and a number.";
+        "Password must be at least 6 characters";
       valid = false;
     }
   

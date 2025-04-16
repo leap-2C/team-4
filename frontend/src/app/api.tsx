@@ -36,6 +36,7 @@ export const signUp = async (data: User) => {
     }
     localStorage.setItem("userId", response.data.id);
     localStorage.setItem("token", response.data.token);
+    localStorage.setItem("userEmail", data.email);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Signup failed");
@@ -48,6 +49,7 @@ export const login = async (data: { email: string; password: string }) => {
     if (response.status === 200 && response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("userEmail", data.email); // Add
       return response.data;
     }
     throw new Error("Login failed");
@@ -57,22 +59,25 @@ export const login = async (data: { email: string; password: string }) => {
 };
 export const createUserProfile = async (data: UserProfile) => {
   try {
-    const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}/profile`, data, {
-      headers: { Authorization: `Bearer ${token}` },
     });
+    if (response.status === 200 && response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.userId);
+      return response.data;
+    }
     if (!response.data) {
       throw new Error("Profile creation failed!");
     }
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Profile creation failed");
+  
   }
 
 };
 export const createpaymentDetails = async (data: PaymentDetails) => {
   try {
-    const response = await axios.patch(`${API_URL}/`, data);
+    const response = await axios.patch(`${API_URL}/`, data); 
     if (!response.data) {
       throw new Error("Payment detail creation failed!");
     }
@@ -81,4 +86,20 @@ export const createpaymentDetails = async (data: PaymentDetails) => {
     throw new Error(error.response?.data?.message || "Payment detail creation failed");
   }
 };
-
+export const getUserProfile = async () => {
+  try {
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    if (!userId) {
+      throw new Error("User ID not found");
+    }
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+    const response = await axios.get(`${API_URL}/profile/${userId}`, config);
+    if (!response.data) {
+      throw new Error("Failed to fetch user profile");
+    }
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to fetch user profile");
+  }
+};

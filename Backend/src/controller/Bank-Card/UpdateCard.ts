@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 const updateCard = async (req: Request, res: Response): Promise<void> => {
   try {
     const { cardId } = req.params;
-    const { country, firstName, lastName, expriryDate } = req.body;
+    const { country, firstName, lastName, expriryDate} = req.body;
 
     const existingCard = await prisma.bankCard.findUnique({
       where: { id: cardId },

@@ -5,16 +5,18 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LoginAndSignUp from "./_components/LoginSignup";
+import { getUserProfile } from "../api";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  const [ShopdropdownOpen, setShopDropdownOpen] = useState(false);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [userProfile, setUserProfile] = useState<{
+    name: string;
+    AvatarImage: string;
+  } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,6 +24,15 @@ const Header = () => {
     if (token) {
       setIsLoggedIn(true);
       if (email) setUserEmail(email);
+      getUserProfile()
+        .then((profile) => {
+          setUserProfile({
+            name: profile.name || "",
+            AvatarImage: profile.AvatarImage || "",
+          });
+        })
+        .catch((error) => {
+        });
     }
   }, []);
 
@@ -30,6 +41,7 @@ const Header = () => {
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userId");
     setIsLoggedIn(false);
+    setUserProfile(null);
     router.push("/login");
   };
 
@@ -48,8 +60,6 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
-
   return (
     <div className="h-[56px] w-full flex flex-row items-center justify-between px-[80px] bg-white">
       <button
@@ -60,30 +70,39 @@ const Header = () => {
         <p className="text-[16px] font-bold">Buy Me Coffee</p>
       </button>
       {isLoggedIn ? (
-      <div className="relative" ref={dropdownRef}>
-        <div
-          className="flex gap-3 items-center cursor-pointer"
-          onClick={handleOpen}
-        >
-          <Avatar className="h-[40px] w-[40px]">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <p className="pr-[20px] font-medium text-sm">Jake</p>
-          <ChevronDown className="h-[16px] w-[16px]" />
-        </div>
-
-        {open && (
-          <div className="absolute right-0 mt-2 w-[140px] bg-white rounded-md shadow-lg border border-gray-200 z-50">
-            <Button
-              onClick={handleLogout}
-              className="w-full text-left px-4 py-2 text-sm"
-            >
-              Logout
-            </Button>
+        <div className="relative" ref={dropdownRef}>
+          <div
+            className="flex gap-3 items-center cursor-pointer"
+            onClick={handleOpen}
+          >
+            <Avatar className="h-[40px] w-[40px]">
+              <AvatarImage
+                src={
+                  userProfile?.AvatarImage
+                }
+                alt={userProfile?.name || userEmail || "User"}
+              />
+              <AvatarFallback>
+                {(userProfile?.name || userEmail || "U")[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <p className="pr-[20px] font-medium text-sm">
+              {userProfile?.name || userEmail || "User"}
+            </p>
+            <ChevronDown className="h-[16px] w-[16px]" />
           </div>
-        )}
-      </div>
+
+          {open && (
+            <div className="absolute right-0 mt-2 w-[140px] bg-white rounded-md shadow-lg border border-gray-200 z-50">
+              <Button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm"
+              >
+                Logout
+              </Button>
+            </div>
+          )}
+        </div>
       ) : (
         <LoginAndSignUp />
       )}

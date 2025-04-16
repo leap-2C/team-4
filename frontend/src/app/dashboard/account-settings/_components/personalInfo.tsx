@@ -1,12 +1,23 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Camera } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-function personalInfo() {
+
+function PersonalInfo() {
   const [image, setImage] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+  const [social, setSocial] = useState("");
+  const [id, setId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) setId(userId);
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -22,6 +33,34 @@ function personalInfo() {
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
+
+  const handleSubmit = async () => {
+    if (!id) {
+      alert("User ID not found");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `https://backend-tawny-delta.vercel.app/profile/${id}`, // ⚠️ Эндэх маршрутыг шалгаарай!
+        {
+          id,
+          name,
+          about,
+          avatarImage: image,
+          socialMediaURL: social,
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Changes saved successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to save changes.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 border border-[#E4E4E7] rounded-[8px] p-4">
       <p className="font-bold">Personal Info</p>
@@ -48,28 +87,46 @@ function personalInfo() {
           className="hidden"
         />
       </div>
+
       <div>
         <p className="text-[14px] font-medium">Name</p>
-        <Input className="w-[602px] mt-2" placeholder="Enter your name" />
+        <Input
+          className="w-[602px] mt-2"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </div>
+
       <div>
         <p className="text-[14px] font-medium">About</p>
         <Input
-          className="w-[602px]  mt-2"
+          className="w-[602px] mt-2"
           placeholder="Add text about yourself"
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
         />
       </div>
+
       <div>
         <p className="text-[14px] font-medium">Social media URL</p>
         <Input
-          className="w-[602px]  mt-2"
+          className="w-[602px] mt-2"
           placeholder="Add your social media URL"
+          value={social}
+          onChange={(e) => setSocial(e.target.value)}
         />
       </div>
-      <Button className="w-[602px] mt-4" variant="default">
+
+      <Button
+        className="w-[602px] mt-4"
+        variant="default"
+        onClick={handleSubmit}
+      >
         Save changes
       </Button>
     </div>
   );
 }
-export default personalInfo;
+
+export default PersonalInfo;

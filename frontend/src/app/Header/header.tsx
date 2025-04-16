@@ -5,14 +5,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LoginAndSignUp from "./_components/LoginSignup";
-import { getUserProfile } from "../api";
+import { getUserProfile } from "../_api/_components/GetUserProfile";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
   const [userProfile, setUserProfile] = useState<{
     name: string;
     AvatarImage: string;
@@ -20,29 +19,34 @@ const Header = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const email = localStorage.getItem("userEmail");
+    const name = localStorage.getItem("name");
+
     if (token) {
       setIsLoggedIn(true);
-      if (email) setUserEmail(email);
+
       getUserProfile()
         .then((profile) => {
           setUserProfile({
-            name: profile.name || "",
+            name: name || "User",
             AvatarImage: profile.AvatarImage || "",
           });
         })
         .catch((error) => {
+          console.error("Failed to fetch profile:", error);
+          setUserProfile({
+            name: name || "User",
+            AvatarImage: "",
+          });
         });
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("name");
     localStorage.removeItem("userId");
     setIsLoggedIn(false);
     setUserProfile(null);
-    router.push("/login");
   };
 
   const handleOpen = () => setOpen(!open);
@@ -63,7 +67,7 @@ const Header = () => {
   return (
     <div className="h-[56px] w-full flex flex-row items-center justify-between px-[80px] bg-white">
       <button
-        onClick={() => router.push("/dashboard/home")}
+        onClick={() => router.push("/Dashboard/home")}
         className="flex gap-2 items-center"
       >
         <Coffee className="w-[20px] h-[20px]" />
@@ -77,17 +81,15 @@ const Header = () => {
           >
             <Avatar className="h-[40px] w-[40px]">
               <AvatarImage
-                src={
-                  userProfile?.AvatarImage
-                }
-                alt={userProfile?.name || userEmail || "User"}
+                src={userProfile?.AvatarImage}
+                alt={userProfile?.name || "User"}
               />
               <AvatarFallback>
-                {(userProfile?.name || userEmail || "U")[0].toUpperCase()}
+                {(userProfile?.name || "U")[0].toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <p className="pr-[20px] font-medium text-sm">
-              {userProfile?.name || userEmail || "User"}
+              {userProfile?.name || "User"}
             </p>
             <ChevronDown className="h-[16px] w-[16px]" />
           </div>

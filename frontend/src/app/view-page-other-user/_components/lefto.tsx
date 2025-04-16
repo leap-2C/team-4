@@ -9,6 +9,7 @@ import { Camera } from "lucide-react";
 import { X } from 'lucide-react';
 function Leftside() {
     const [open, setOpen] = useState(false);
+    const name = localStorage.getItem("name")
     const handleOpen = () => {
         setOpen(!open);
     }
@@ -43,7 +44,7 @@ function Leftside() {
                         <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                     </div>
-                    <p className="font-[700] text-[20px] line-weight-[24px] ">Jake</p>
+                    <p className="font-[700] text-[20px] line-weight-[24px] ">{name}</p>
                 </div>
             </div>
             <div className="py-[16px]">

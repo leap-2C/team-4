@@ -6,31 +6,38 @@ export const updateProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id, name, about, avatarImage , socialMediaURL , backgroundImage , successMessage  } = req.body;
+    const {
+      id,
+      name,
+      about,
+      avatarImage,
+      socialMediaURL,
+      backgroundImage,
+      successMessage,
+    } = req.body;
 
-    if (!name) {
+    if (!id) {
       res.status(400).json({ message: "User ID is required." });
       return;
     }
 
     const updatedProfile = await prisma.profile.update({
       where: {
-        id: req.params.id,
+        id: id, 
       },
       data: {
-        id,
         name,
         about,
         avatarImage,
         socialMediaURL,
         backgroundImage,
-        successMessage
+        successMessage,
       },
     });
 
-    res.status(400).json(updatedProfile);
+    res.status(200).json(updatedProfile);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(400).json({ message: "Server error." });
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Server error." });
   }
 };

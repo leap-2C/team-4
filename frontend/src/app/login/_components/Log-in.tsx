@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { login } from "@/app/api";
+import { login } from "@/app/_api/_components/Login";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
@@ -55,10 +55,13 @@ function Login() {
     }
 
     try {
-      const response = await login({ email, password });
+      const response = await login({
+        email, password,
+        name: ""
+      });
       console.log(response);
-      
-      router.push("/dashboard/home");
+
+      router.push("/Dashboard/home");
     } catch (error: any) {
       if (error?.response?.data?.message) {
         setServerError(error.response.data.message);

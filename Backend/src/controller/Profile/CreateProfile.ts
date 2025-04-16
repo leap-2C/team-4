@@ -28,7 +28,6 @@ export const createProfile = async (
 
     res.status(400).json(newProfile);
   } catch (error) {
-    console.error("Error:", error);
     res.status(400).json({ message: "Server error." });
   }
 };

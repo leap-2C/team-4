@@ -9,20 +9,20 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+// import { cn } from "@/lib/utils";
+// import {
+//   Command,
+//   CommandEmpty,
+//   CommandGroup,
+//   CommandInput,
+//   CommandItem,
+//   CommandList,
+// } from "@/components/ui/command";
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover";
 import { createUserProfile } from "@/app/api";
 
 type CountryOption = {
@@ -39,9 +39,9 @@ const Complete = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [cardNumber, setCardNumber] = useState("");
-  const [openCountry, setOpenCountry] = useState(false);
-  const [openMonth, setOpenMonth] = useState(false);
-  const [openYear, setOpenYear] = useState(false);
+  // const [openCountry, setOpenCountry] = useState(false);
+  // const [openMonth, setOpenMonth] = useState(false);
+  // const [openYear, setOpenYear] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState("");
@@ -87,13 +87,13 @@ const Complete = () => {
     fetchCountries();
   }, []);
 
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length <= 16) {
-      value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
-      setCardNumber(value);
-    }
-  };
+  // const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let value = e.target.value.replace(/\D/g, "");
+  //   if (value.length <= 16) {
+  //     value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+  //     setCardNumber(value);
+  //   }
+  // };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -110,26 +110,26 @@ const Complete = () => {
     fileInputRef.current?.click();
   };
 
-  const handleYearSelect = (selectedYear: string) => {
-    setYear((prevYear) => (prevYear === selectedYear ? "" : selectedYear));
-    setOpenYear(false);
-  };
+  // const handleYearSelect = (selectedYear: string) => {
+  //   setYear((prevYear) => (prevYear === selectedYear ? "" : selectedYear));
+  //   setOpenYear(false);
+  // };
 
-  const handleNextStep = () => {
-    if (!name || !about || !socialMediaURL) {
-      alert("Please fill in all fields");
-      return;
-    }
-    if (!image) {
-      alert("Please upload an image");
-      return;
-    }
-    setStep(2);
-  };
+  // const handleNextStep = () => {
+  //   if (!name || !about || !socialMediaURL) {
+  //     alert("Please fill in all fields");
+  //     return;
+  //   }
+  //   if (!image) {
+  //     alert("Please upload an image");
+  //     return;
+  //   }
+  //   setStep(2);
+  // };
 
-  const handleBackStep = () => {
-    setStep(1);
-  };
+  // const handleBackStep = () => {
+  //   setStep(1);
+  // };
 
   const handleSubmitProfile = async () => {
     const missingFields = [];
@@ -148,7 +148,6 @@ const Complete = () => {
 
     try {
       const userId = localStorage.getItem("userId");
-      console.log("userId from localStorage:", userId);
       if (!userId) {
         throw new Error("User ID not found. Please log in again.");
       }
@@ -161,11 +160,9 @@ const Complete = () => {
         backgroundImage: "",
         successMessage: "Profile created successfully!",
       };
-      console.log("Sending userProfile:", userProfile);
       await createUserProfile(userProfile);
       router.push("/dashboard/home");
     } catch (error: any) {
-      console.error("Profile creation error:", error);
       alert(error.message || "Failed to create profile");
     }
   };
@@ -245,14 +242,14 @@ const Complete = () => {
             </div>
 
             <div className="flex justify-end">
-              <Button onClick={handleNextStep} className="w-[246px] h-[40px]">
+              <Button onClick={handleSubmitProfile} className="h-[40px] w-[246px]">
                 Continue
               </Button>
             </div>
           </div>
         )}
 
-        {step === 2 && (
+        {/* {step === 2 && (
           <div className="w-[510px] gap-[24px] flex flex-col">
             <p className="text-[24px] font-[600]">How would you like to be paid?</p>
             <p>Enter location and payment details</p>
@@ -406,7 +403,7 @@ const Complete = () => {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

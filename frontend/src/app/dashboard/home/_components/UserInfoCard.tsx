@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Copy } from "lucide-react";
 import { useState } from "react";
 import { Check, ChevronDown, ChevronsUpDown } from "lucide-react";
@@ -34,12 +34,14 @@ const frameworks = [
     label: "All time",
   }
 ];
-
 function UserInfoCard() {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("userEmail");
+  }, [])
 
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-
   return (
     <div className=" w-[907px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6 ">
       <div className="w-[859px] h-[48px] flex justify-between ">

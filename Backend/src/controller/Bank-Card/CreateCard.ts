@@ -7,7 +7,8 @@ import { Request, Response } from "express";
 const createCard = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { country, firstName, lastName, expriryDate } = req.body;
+    const { country, firstName, lastName, expriryDate, CardNumber, CVV } =
+      req.body;
 
     if (!country || !firstName || !lastName || !expriryDate) {
       res.status(400).json({ message: "Бүх талбарыг бөглөнө үү." });
@@ -21,6 +22,8 @@ const createCard = async (req: Request, res: Response) => {
         lastName,
         expriryDate,
         userId,
+        CardNumber,
+        CVV
       },
     });
 

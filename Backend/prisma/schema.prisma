@@ -28,6 +28,9 @@ model bankCard{
   expriryDate Int
   userId String 
   user   User   @relation(fields: [userId], references: [id])
+  CVV String
+  CardNumber String
+  
 }
  
 model Profile {
@@ -40,6 +43,7 @@ model Profile {
   successMessage String
   timestamp DateTime @default(now())
   user User[]
+  
  
 }
  

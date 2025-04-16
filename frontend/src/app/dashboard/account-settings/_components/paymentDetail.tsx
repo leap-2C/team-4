@@ -1,19 +1,43 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import Selectcountry from "./selectcountry";
 import { Input } from "@/components/ui/input";
-import { createpaymentDetails } from "@/app/api"; 
+import Selectcountry from "./selectcountry";
+import { getpaymentDetails, updatepaymentDetails } from "@/app/api";
 
 function PaymentDetails() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     cardNumber: "",
-    expiry: "",
+    expiryDate: "",
     cvv: "",
-    country: "", 
+    country: "",
   });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+
+        const data = await getpaymentDetails({ id: userId });
+        setFormData({
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
+          cardNumber: data.cardNumber || "",
+          expiryDate: data.expiryDate || "",
+          cvv: data.cvv || "",
+          country: data.country || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch payment details:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -35,24 +59,25 @@ function PaymentDetails() {
     if (value.length <= 4) {
       value = value.replace(/(\d{2})(?=\d)/g, "$1/");
     }
-    handleChange("expiry", value);
+    handleChange("expiryDate", value);
   };
 
   const handleSaveChanges = async () => {
-    console.log(formData);
-
     try {
-      const response = await createpaymentDetails({
+      const response = await updatepaymentDetails({
+        id: localStorage.getItem("userId") || "",
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         cardNumber: formData.cardNumber,
-        expiryDate: formData.expiry,
+        expiryDate: formData.expiryDate,
         cvv: formData.cvv,
-        cardHolderName: `${formData.firstName} ${formData.lastName}`,
         country: formData.country,
       });
+
       if (!response) {
         throw new Error("Payment details not saved");
       }
-      console.log(response);
+ 
       alert("Payment details saved successfully");
     } catch (error) {
       console.error("Error saving payment details:", error);
@@ -113,7 +138,7 @@ function PaymentDetails() {
             inputMode="numeric"
             placeholder="MM/YY"
             className="w-[200px] mt-2"
-            value={formData.expiry}
+            value={formData.expiryDate}
             onChange={handleExpiryChange}
             maxLength={5}
           />

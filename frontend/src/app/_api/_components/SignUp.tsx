@@ -10,6 +10,7 @@ interface User {
 export const signUp = async (data: User) => {
   try {
     const response = await axios.post(`${API_URL}/users`, data);
+    
     if (!response.data || !response.data.id) {
       throw new Error("Signup failed: No user data returned");
     }

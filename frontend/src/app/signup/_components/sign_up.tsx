@@ -23,7 +23,6 @@ function Signup() {
   const [loading, setLoading] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
   const handleSignup = async () => {
     let valid = true;
@@ -34,7 +33,7 @@ function Signup() {
       valid = false;
     }
 
-    if (!passwordRegex.test(password)) {
+    if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
       valid = false;
     }
@@ -55,6 +54,7 @@ function Signup() {
           email,
           password,
         });
+        localStorage.setItem("token", response.data.token);
         setSuccessMessage("Signup successful! Redirecting...");
         setTimeout(() => router.replace("/complete"), 2000);
       } catch (error: any) {

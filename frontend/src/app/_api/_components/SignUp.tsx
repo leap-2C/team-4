@@ -15,7 +15,6 @@ export const signUp = async (data: User) => {
     }
     localStorage.setItem("userId", response.data.id);
     localStorage.setItem("token", response.data.token);
-    localStorage.setItem("userEmail", data.email);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Signup failed");

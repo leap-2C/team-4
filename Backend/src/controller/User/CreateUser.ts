@@ -40,7 +40,7 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
         expiresIn: "1h",
       }
     );
-    res.status(201).json({ token, id: newUser.id });
+    res.status(201).json({ token:token, id: newUser.id });
   } catch (error) {
     console.error("Алдаа:", error);
     res.status(500).json({ message: "Серверийн алдаа." });

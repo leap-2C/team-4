@@ -25,7 +25,6 @@ const login = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
-
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET as string,
@@ -33,7 +32,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         expiresIn: "1h",
       }
     );
-    res.status(200).json({ message: "Login successful", token, userId: user.id });
+    res.status(200).json({ message: "Login successful",userId: user.id });
   } catch (error) {
     console.log("Error:", error);
     res.status(500).json({ message: "Server error" });

@@ -1,5 +1,5 @@
 import prisma from "../../utils/PrismaClient";
-
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 
@@ -33,8 +33,14 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
         password: hashedPassword,
       },
     });
-
-    res.status(201).json(newUser);
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: "1h",
+      }
+    );
+    res.status(201).json({ token, id: newUser.id });
   } catch (error) {
     console.error("Алдаа:", error);
     res.status(500).json({ message: "Серверийн алдаа." });

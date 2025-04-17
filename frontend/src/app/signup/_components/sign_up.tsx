@@ -54,7 +54,8 @@ function Signup() {
           email,
           password,
         });
-        localStorage.setItem("token", response.data.token);
+        console.log("Signup response:", response);
+        
         setSuccessMessage("Signup successful! Redirecting...");
         setTimeout(() => router.replace("/complete"), 2000);
       } catch (error: any) {

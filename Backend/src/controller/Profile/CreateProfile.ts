@@ -25,6 +25,7 @@ export const createProfile = async (
         successMessage
       },
     });
+    
 
     res.status(400).json(newProfile);
   } catch (error) {

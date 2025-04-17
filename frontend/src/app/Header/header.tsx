@@ -67,7 +67,7 @@ const Header = () => {
   return (
     <div className="h-[56px] w-full flex flex-row items-center justify-between px-[80px] bg-white">
       <button
-        onClick={() => router.push("/Dashboard/home")}
+        onClick={() => router.push("/dashboard/home")}
         className="flex gap-2 items-center"
       >
         <Coffee className="w-[20px] h-[20px]" />

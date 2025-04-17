@@ -49,7 +49,7 @@ const Complete = () => {
         successMessage: "Profile created successfully!",
       };
       await createUserProfile(userProfile);
-      router.push("/Dashboard/home");
+      router.push("/dashboard/home");
     } catch (error: any) {
       alert(error.message || "Failed to create profile");
     }
@@ -59,7 +59,7 @@ const Complete = () => {
     <div className="w-screen h-screen flex items-center flex-col">
       <div className="h-[56px] w-full flex flex-row items-center justify-between px-[80px] bg-white">
         <button
-          onClick={() => router.push("/Dashboard/home")}
+          onClick={() => router.push("/dashboard/home")}
           className="flex gap-2 items-center"
         >
           <Coffee className="w-[20px] h-[20px]" />

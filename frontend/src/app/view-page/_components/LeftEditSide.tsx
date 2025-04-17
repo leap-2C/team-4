@@ -17,6 +17,8 @@ function LeftEditSide() {
     }
         const [image, setImage] = useState<string | null>(null);
         const fileInputRef = useRef<HTMLInputElement>(null);
+
+       const name = localStorage.getItem("name")
       
         const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const file = e.target.files?.[0];
@@ -43,7 +45,7 @@ function LeftEditSide() {
                         <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                     </div>
-                    <p className="font-[700] text-[20px] line-weight-[24px] ">Jake</p>
+                    <p className="font-[700] text-[20px] line-weight-[24px] ">{name}</p>
                 </div>
                 <Button onClick={handleOpen}>Edit page</Button>
             </div>

@@ -15,6 +15,7 @@ function Login() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [serverError, setServerError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [loginMessage, setLoginMessage] = useState<{ type: string; message: string } | null>(null);
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
@@ -25,6 +26,7 @@ function Login() {
     e.preventDefault();
     let hasError = false;
     setServerError("");
+    setLoginMessage(null);
     setLoading(true);
 
     if (email.trim() === "") {
@@ -56,18 +58,25 @@ function Login() {
 
     try {
       const response = await login({
-        email, password,
-        name: ""
+        email,
+        password,
+        name: "",
       });
       console.log(response);
 
-      router.push("/Dashboard/home");
+      // Set success message
+      setLoginMessage({ type: "success", message: "Амжилттай нэвтэрлээ!" });
+      setTimeout(() => {
+        router.push("/dashboard/home"); // Redirect after showing the message
+      }, 1000); // Delay redirect to show the success message briefly
     } catch (error: any) {
       if (error?.response?.data?.message) {
         setServerError(error.response.data.message);
       } else {
         setServerError("Имэйл эсвэл нууц үг буруу байна");
       }
+      // Set failure message
+      setLoginMessage({ type: "error", message: serverError || "Нэвтрэхэд алдаа гарлаа" });
     } finally {
       setLoading(false);
     }
@@ -81,6 +90,7 @@ function Login() {
     setEmailError("");
     setPasswordError("");
     setServerError("");
+    setLoginMessage(null);
   };
 
   return (

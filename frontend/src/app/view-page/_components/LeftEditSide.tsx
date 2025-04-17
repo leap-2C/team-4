@@ -53,14 +53,14 @@ function LeftEditSide() {
                 <div className="h-[1px] w-[584px] bg-[black]"></div>
             </div>
             <div className="flex flex-col gap-[12px] justify-between items-start w-[584px]">
-                <p className="text-[16px] font-[600] line-heigth-[32px]">About Jake</p>
-                <p>I’m a typical person who enjoys exploring different things. I also make music art as a hobby. Follow me along.</p>
+                <p className="text-[16px] font-[600] line-heigth-[32px]">About {name}</p>
+                <p>{name}</p>
             </div>
         </div>
         <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
             <div className="flex flex-col gap-[12px] justify-between items-start w-[584px] ">
                 <p className="text-[16px] font-[600] line-height-[24px]">Social media URL</p>
-                <p>https://buymeacoffee.com/spacerulz44</p>
+                <p>https://buymeacoffee.com/{name}</p>
             </div>
         </div>
         <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
@@ -68,7 +68,7 @@ function LeftEditSide() {
                 <div className="w-[584px] border-[1px] rounded-lg">
                     <div className="py-[24px] px-[100px] flex flex-col justify-center items-center gap-[28px]">
                         <Heart className="h-[30px] w-[30px]"/>
-                        <p>Be the first one to support Jake</p>
+                        <p>Be the first one to support {name}</p>
                     </div>
                 </div>
         </div>

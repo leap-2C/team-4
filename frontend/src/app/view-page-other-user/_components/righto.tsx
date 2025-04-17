@@ -3,7 +3,12 @@ import React from 'react';
 import { Coffee } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
 function Rightside() {
+    const router = useRouter();
+    const handleDonationComplete = () => {
+        router.push("/donation-completed");
+    };
     return (
         <div className="border-[1px] rounded-lg w-[682px] bg-[white]">
             <div className='flex flex-col gap-[32px] p-[24px]'>
@@ -30,7 +35,9 @@ function Rightside() {
                     </div>
                 </div>
                 <div>
-                    <Button className='w-[100%]'>Support</Button>
+                    <Button 
+                    onClick={handleDonationComplete}
+                    className='w-[100%]'>Support</Button>
                 </div>
             </div>
         </div>

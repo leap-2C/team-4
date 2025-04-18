@@ -30,7 +30,7 @@ function UserInfoCard() {
   const [name, setName] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
-  // Only access localStorage on the client side
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedName = localStorage.getItem("name");

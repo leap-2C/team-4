@@ -29,17 +29,17 @@ function Signup() {
     const newErrors = { email: "", password: "", confirmPassword: "" };
 
     if (!emailRegex.test(email)) {
-      newErrors.email = "Please enter a valid email address.";
+      newErrors.email = "Зөв имэйл хаяг оруулна уу.";
       valid = false;
     }
 
     if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой.";
       valid = false;
     }
 
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+      newErrors.confirmPassword = "Нууц үгнүүд таарахгүй байна.";
       valid = false;
     }
 
@@ -56,12 +56,12 @@ function Signup() {
         });
         console.log("Signup response:", response);
         
-        setSuccessMessage("Signup successful! Redirecting...");
+        setSuccessMessage("Бүртгэл амжилттай! Хуудсыг шилжүүлж байна...");
         setTimeout(() => router.replace("/complete"), 2000);
       } catch (error: any) {
         setErrors((prev) => ({
           ...prev,
-          email: error.message || "Signup failed. Please try again.",
+          email: error.message || "Бүртгэл амжилтгүй. Дахин оролдоно уу.",
         }));
       } finally {
         setLoading(false);
@@ -73,7 +73,7 @@ function Signup() {
     <>
       {loading && (
         <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
-          <div className="text-lg font-medium">Creating your account...</div>
+          <div className="text-lg font-medium">Таны бүртгэлийг үүсгэж байна...</div>
         </div>
       )}
       <div className="w-screen h-screen flex">
@@ -85,16 +85,15 @@ function Signup() {
           <div className="w-[455px] h-[370px] flex flex-col items-center gap-10">
             <Image
               src="/coffe.png"
-              alt="login"
+              alt="Бүртгэл"
               width={240}
               height={240}
               className="w-[240px] h-[240px] object-cover"
             />
             <div className="flex flex-col gap-3 items-center text-center">
-              <p className="font-bold text-[24px]">Fund your creative work</p>
+              <p className="font-bold text-[24px]">Таны бүтээлч ажлыг санхүүжүүл</p>
               <p className="font-normal text-[16px]">
-                Accept support. Start a membership. Setup a shop. It’s easier
-                than you think.
+                Дэмжлэг хүлээн ав. Гишүүнчлэл эхлүүл. Дэлгүүр нээ. Энэ нь таны бодсоноос хялбар.
               </p>
             </div>
           </div>
@@ -105,12 +104,12 @@ function Signup() {
             onClick={() => router.replace("/login")}
             className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]"
           >
-            Sign in
+            Нэвтрэх
           </Button>
           <div className="p-[22px] w-[403px]">
-            <p className="text-[24px] font-semibold">Create Your Account</p>
+            <p className="text-[24px] font-semibold">Бүртгэл Үүсгэх</p>
             <p className="text-[14px] text-[#71717A]">
-              Choose a username for your page
+              Таны хуудасны хэрэглэгчийн нэрийг сонгоно уу
             </p>
           </div>
 
@@ -121,22 +120,22 @@ function Signup() {
           )}
 
           <div className="flex flex-col gap-2 pb-[24px]">
-            <p className="text-[14px] font-medium">Username</p>
+            <p className="text-[14px] font-medium">Хэрэглэгчийн нэр</p>
             <Input
               className="w-[359px] h-[40px] rounded-md"
-              placeholder="Enter username here"
+              placeholder="Энд хэрэглэгчийн нэр оруулна уу"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col gap-2 pb-[24px]">
-            <p className="text-[14px] font-medium">Email</p>
+            <p className="text-[14px] font-medium">Имэйл</p>
             <Input
               className={`w-[359px] h-[40px] rounded-md ${
                 errors.email && "border-red-500"
               }`}
-              placeholder="Enter email here"
+              placeholder="Энд имэйл оруулна уу"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -146,13 +145,13 @@ function Signup() {
           </div>
 
           <div className="flex flex-col gap-2 pb-[24px]">
-            <p className="text-[14px] font-medium">Password</p>
+            <p className="text-[14px] font-medium">Нууц үг</p>
             <Input
               type="password"
               className={`w-[359px] h-[40px] rounded-md ${
                 errors.password && "border-red-500"
               }`}
-              placeholder="Enter password here"
+              placeholder="Энд нууц үг оруулна уу"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -162,13 +161,13 @@ function Signup() {
           </div>
 
           <div className="flex flex-col gap-2 pb-[24px]">
-            <p className="text-[14px] font-medium">Confirm password</p>
+            <p className="text-[14px] font-medium">Нууц үг баталгаажуулах</p>
             <Input
               type="password"
               className={`w-[359px] h-[40px] rounded-md ${
                 errors.confirmPassword && "border-red-500"
               }`}
-              placeholder="Enter password here"
+              placeholder="Энд нууц үг оруулна уу"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -183,7 +182,7 @@ function Signup() {
             onClick={handleSignup}
             className="w-[359px] h-[40px] rounded-md"
           >
-            Continue
+            Үргэлжлүүл
           </Button>
         </div>
       </div>
@@ -191,4 +190,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Signup;  

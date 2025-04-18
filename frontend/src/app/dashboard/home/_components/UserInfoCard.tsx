@@ -28,63 +28,84 @@ function UserInfoCard() {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
+  const [avatarImage, setAvatarImage] = useState("");
+  const [about, setAbout] = useState("");
+  const [socialMediaURL, setSocialMediaURL] = useState("");
   const [isCopied, setIsCopied] = useState(false);
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedName = localStorage.getItem("name");
-      if (storedName) {
-        setName(storedName);
-      }
+      setName(localStorage.getItem("name") || "");
+      setAvatarImage(
+        localStorage.getItem("avatarImage") ||
+          "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png"
+      );
+      setAbout(localStorage.getItem("about") || "");
+      setSocialMediaURL(localStorage.getItem("socialMediaURL") || "");
     }
   }, []);
 
   const handleCopyLink = async () => {
-    if (!name) return; // Prevent copying if name is empty
+    if (!name) return;
     const link = `https://buymeacoffee.com/${name}`;
     try {
       await navigator.clipboard.writeText(link);
       setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000); // Revert after 2 seconds
+      setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       console.error("Failed to copy link:", error);
-      // Optionally show an error message
     }
   };
 
   return (
     <div className="w-[907px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6">
-      <div className="w-[859px] h-[48px] flex justify-between">
+      {/* Top: Avatar, Name, Link */}
+      <div className="w-[859px] flex justify-between">
         <div className="flex gap-3">
           <Avatar className="w-[40px] h-[40px]">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={avatarImage} alt={name} />
             <AvatarFallback>{name?.[0]?.toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           <div>
             <p className="text-[16px] font-bold">{name || "User"}</p>
-            <p className="text-[14px] font-normal">
+            <p className="text-[14px] font-normal text-muted-foreground">
               buymeacoffee.com/{name || "user"}
             </p>
+            {/* {about && (
+              <p className="text-[13px] text-gray-600 mt-1 max-w-[400px]">
+                {about}
+              </p>
+            )} */}
+            {socialMediaURL && (
+              <a
+                href={socialMediaURL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-blue-500 underline mt-1 block"
+              >
+                {socialMediaURL}
+              </a>
+            )}
           </div>
         </div>
+
+        {/* Copy Link Button */}
         <button
           onClick={handleCopyLink}
           className={`bg-black text-white text-[14px] font-medium w-[159px] h-[40px] px-[16px] py-[8px] rounded-[8px] flex items-center gap-2 ${
             !name ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={!name}
-          aria-label={isCopied ? "Link copied" : "Copy share page link"}
         >
           <Copy className="w-[16px] h-[16px]" />
           {isCopied ? "Copied" : "Share page link"}
         </button>
       </div>
 
+      {/* Divider */}
       <div className="w-[859px] h-[1px] bg-gray-300 my-3" />
 
+      {/* Earnings Section */}
       <div className="w-[859px] h-[104px] flex flex-col justify-between">
         <div className="flex items-center gap-4">
           <p className="text-[20px] font-semibold">Earnings</p>
@@ -105,16 +126,18 @@ function UserInfoCard() {
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
               <Command>
-                <CommandInput placeholder="Search framework..." />
+                <CommandInput placeholder="Search range..." />
                 <CommandList>
-                  <CommandEmpty>No framework found.</CommandEmpty>
+                  <CommandEmpty>No option found.</CommandEmpty>
                   <CommandGroup>
                     {frameworks.map((framework) => (
                       <CommandItem
                         key={framework.value}
                         value={framework.value}
                         onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
+                          setValue(
+                            currentValue === value ? "" : currentValue
+                          );
                           setOpen(false);
                         }}
                       >
@@ -127,7 +150,7 @@ function UserInfoCard() {
             </PopoverContent>
           </Popover>
         </div>
-        <div className="text-[36px] font-bold">450$</div>
+        <div className="text-[36px] font-bold">0$</div>
       </div>
     </div>
   );

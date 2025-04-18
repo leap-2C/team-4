@@ -8,10 +8,14 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 function UsersCard() {
+  const [name, setName] = useState("");
   const router = useRouter();
   const handleViewPage = () => {
     router.push("/view-page-other-user");
   };
+  useEffect(() => {
+    
+  }, [])
   return (
     <div className="w-[861px] flex flex-col p-6 gap-3">
       <div className="w-[861px] flex justify-between">

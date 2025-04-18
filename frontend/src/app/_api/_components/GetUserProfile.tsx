@@ -40,10 +40,8 @@ export const getMultipleUserProfiles = async (userIds: string[]) => {
         console.warn(`Skipping profile for userId ${userId}:`, err);
       }
     }
-    console.log("Fetched profiles:", profiles);
     return profiles;
   } catch (error: any) {
-    console.error("Failed to fetch multiple profiles:", error);
     throw new Error("Failed to fetch user profiles");
   }
 };

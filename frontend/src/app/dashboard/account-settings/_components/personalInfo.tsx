@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Camera } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { updateUserProfile } from "@/app/_api/_components/updateUserProfile";
 
 function PersonalInfo() {
   const [image, setImage] = useState<string | null>(null);
@@ -12,10 +12,14 @@ function PersonalInfo() {
   const [about, setAbout] = useState("");
   const [social, setSocial] = useState("");
   const [id, setId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
+    console.log("Retrieved userId:", userId); // Debug: Log userId
     if (userId) setId(userId);
   }, []);
 
@@ -36,34 +40,38 @@ function PersonalInfo() {
 
   const handleSubmit = async () => {
     if (!id) {
-      alert("User ID not found");
+      setError("User ID not found. Please log in again.");
       return;
     }
 
+    setIsLoading(true); // Start loading
     try {
-      const response = await axios.put(
-        `https://backend-tawny-delta.vercel.app/profile/${id}`, // ⚠️ Эндэх маршрутыг шалгаарай!
-        {
-          id,
-          name,
-          about,
-          avatarImage: image,
-          socialMediaURL: social,
-        }
-      );
+      const profileData = {
+        id,
+        name: name.trim(),
+        about: about.trim(),
+        avatarImage: image || "",
+        socialMediaURL: social.trim(),
+      };
 
-      if (response.status === 200) {
-        alert("Changes saved successfully!");
-      }
-    } catch (error) {
+      console.log("Submitting profile data:", profileData); // Debug: Log data
+      await updateUserProfile(profileData);
+      setSuccess("Changes saved successfully!");
+      setError(null);
+    } catch (error: any) {
       console.error("Error updating profile:", error);
-      alert("Failed to save changes.");
+      setError(error.message || "Failed to save changes. Please try again.");
+      setSuccess(null);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
   return (
     <div className="flex flex-col gap-4 border border-[#E4E4E7] rounded-[8px] p-4">
       <p className="font-bold">Personal Info</p>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {success && <p className="text-green-600 text-sm">{success}</p>}
       <div className="flex flex-col w-[160px] gap-2">
         <p className="text-[14px] font-medium">Add photo</p>
         <Avatar
@@ -122,8 +130,9 @@ function PersonalInfo() {
         className="w-[602px] mt-4"
         variant="default"
         onClick={handleSubmit}
+        disabled={isLoading}
       >
-        Save changes
+        {isLoading ? "Saving..." : "Save changes"}
       </Button>
     </div>
   );

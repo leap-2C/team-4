@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ const Complete = () => {
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [socialMediaURL, setSocialMediaURL] = useState("");
-  const [error, setError] = useState<string | null>(null); // Add error state for UI feedback
+  const [error, setError] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,11 +34,12 @@ const Complete = () => {
 
   const handleSubmitProfile = async () => {
     try {
-      setError(null); // Clear previous errors
+      setError(null);
       const userId = localStorage.getItem("userId");
       if (!userId) {
         throw new Error("User ID not found. Please log in again.");
       }
+
       if (!name.trim()) {
         throw new Error("Name is required.");
       }
@@ -52,19 +54,27 @@ const Complete = () => {
         successMessage: "Profile created successfully!",
       };
 
-      console.log("Submitting profile:", userProfile); // Debug: Log profile data
+      console.log("Submitting profile:", userProfile);
       await createUserProfile(userProfile);
+
+      // ✅ Save to localStorage
+      localStorage.setItem("name", userProfile.name);
+      localStorage.setItem("avatarImage", userProfile.avatarImage);
+      localStorage.setItem("about", userProfile.about);
+      localStorage.setItem("socialMediaURL", userProfile.socialMediaURL);
+
       router.push("/dashboard/home");
     } catch (error: any) {
-      const errorMessage = error.message || "Failed to create profile";
-      setError(errorMessage); // Display error in UI
-      console.error("Submission error:", error); // Debug: Log error
+      const errorMessage = error.message || "Failed to create profile.";
+      setError(errorMessage);
+      console.error("Submission error:", error);
     }
   };
 
   return (
     <div className="w-screen h-screen flex items-center flex-col">
-      <div className="h-[56px] w-full flex flex-row items-center justify-between px-[80px] bg-white">
+      {/* Header */}
+      <div className="h-[56px] w-full flex items-center justify-between px-[80px] bg-white border-b">
         <button
           onClick={() => router.push("/dashboard/home")}
           className="flex gap-2 items-center"
@@ -85,12 +95,14 @@ const Complete = () => {
         </div>
       </div>
 
+      {/* Form */}
       <div className="flex justify-center items-center w-full h-full">
         <div className="w-[510px] gap-[24px] flex flex-col">
           <p className="text-[24px] font-[600]">Complete your profile page</p>
-          {error && (
-            <p className="text-red-500 text-[16px]">{error}</p> // Display error in UI
-          )}
+
+          {error && <p className="text-red-500 text-[16px]">{error}</p>}
+
+          {/* Avatar Upload */}
           <div className="gap-[8px] flex flex-col">
             <p>Add photo</p>
             <Avatar
@@ -115,6 +127,7 @@ const Complete = () => {
             />
           </div>
 
+          {/* Form Inputs */}
           <div className="flex flex-col gap-[12px]">
             <div>
               <p>Name</p>
@@ -147,6 +160,7 @@ const Complete = () => {
             </div>
           </div>
 
+          {/* Submit Button */}
           <div className="flex justify-end">
             <Button
               onClick={handleSubmitProfile}

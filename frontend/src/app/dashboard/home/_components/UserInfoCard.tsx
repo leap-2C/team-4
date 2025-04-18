@@ -28,30 +28,58 @@ function UserInfoCard() {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
 
+  // Only access localStorage on the client side
   useEffect(() => {
-    const localName = localStorage.getItem("name");
-    if (localName) {
-      setName(localName);
+    if (typeof window !== "undefined") {
+      const storedName = localStorage.getItem("name");
+      if (storedName) {
+        setName(storedName);
+      }
     }
   }, []);
 
+  const handleCopyLink = async () => {
+    if (!name) return; // Prevent copying if name is empty
+    const link = `https://buymeacoffee.com/${name}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000); // Revert after 2 seconds
+    } catch (error) {
+      console.error("Failed to copy link:", error);
+      // Optionally show an error message
+    }
+  };
+
   return (
     <div className="w-[907px] border-[1px] rounded-[8px] border-gray-300 flex flex-col gap-3 p-6">
-      <div className="w-[859px] h-[48px] flex justify-between ">
+      <div className="w-[859px] h-[48px] flex justify-between">
         <div className="flex gap-3">
           <Avatar className="w-[40px] h-[40px]">
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>{name?.[0]?.toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-[16px] font-bold">{name}</p>
-            <p className="text-[14px] font-normal">buymeacoffee.com/{name}</p>
+            <p className="text-[16px] font-bold">{name || "User"}</p>
+            <p className="text-[14px] font-normal">
+              buymeacoffee.com/{name || "user"}
+            </p>
           </div>
         </div>
-        <button className="bg-black text-white text-[14px] font-medium w-[159px] h-[40px] px-[16px] py-[8px] rounded-[8px] flex items-center gap-2">
+        <button
+          onClick={handleCopyLink}
+          className={`bg-black text-white text-[14px] font-medium w-[159px] h-[40px] px-[16px] py-[8px] rounded-[8px] flex items-center gap-2 ${
+            !name ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={!name}
+          aria-label={isCopied ? "Link copied" : "Copy share page link"}
+        >
           <Copy className="w-[16px] h-[16px]" />
-          Share page link
+          {isCopied ? "Copied" : "Share page link"}
         </button>
       </div>
 

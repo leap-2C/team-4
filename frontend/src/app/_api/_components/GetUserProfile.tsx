@@ -28,20 +28,3 @@ export const getUserProfile = async (userId: string) => {
   } catch (error: any) {
   }
 };
-
-export const getMultipleUserProfiles = async (userIds: string[]) => {
-  try {
-    const profiles = [];
-    for (const userId of userIds) {
-      try {
-        const profile = await getUserProfile(userId);
-        profiles.push(profile);
-      } catch (err) {
-        console.warn(`Skipping profile for userId ${userId}:`, err);
-      }
-    }
-    return profiles;
-  } catch (error: any) {
-    throw new Error("Failed to fetch user profiles");
-  }
-};

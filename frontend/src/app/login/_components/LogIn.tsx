@@ -57,25 +57,19 @@ function Login() {
     }
 
     try {
-      const response = await login({
-        email,
-        password,
-        name: "",
-      });
+      const response = await login({ email, password });
       console.log(response);
 
-      // Set success message
       setLoginMessage({ type: "success", message: "Амжилттай нэвтэрлээ!" });
       setTimeout(() => {
-        router.push("/dashboard/home"); // Redirect after showing the message
-      }, 1000); // Delay redirect to show the success message briefly
+        router.push("/dashboard/home");
+      }, 1000);
     } catch (error: any) {
       if (error?.response?.data?.message) {
         setServerError(error.response.data.message);
       } else {
         setServerError("Имэйл эсвэл нууц үг буруу байна");
       }
-      // Set failure message
       setLoginMessage({ type: "error", message: serverError || "Нэвтрэхэд алдаа гарлаа" });
     } finally {
       setLoading(false);
@@ -120,7 +114,7 @@ function Login() {
       <div className="w-[50%] h-full bg-white flex flex-col items-center justify-center ">
         <Button
           onClick={handleLoginButton}
-          className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80px]"
+          className="w-[83px] h-[40px] rounded-md bg-secondary text-black absolute top-[32px] right-[80s bg-secondary text-black absolute top-[32px] right-[80px]"
         >
           Sign up
         </Button>

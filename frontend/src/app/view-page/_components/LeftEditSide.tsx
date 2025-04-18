@@ -17,8 +17,6 @@ function LeftEditSide() {
     }
         const [image, setImage] = useState<string | null>(null);
         const fileInputRef = useRef<HTMLInputElement>(null);
-
-       const name = localStorage.getItem("name")
       
         const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const file = e.target.files?.[0];
@@ -45,7 +43,7 @@ function LeftEditSide() {
                         <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                     </div>
-                    <p className="font-[700] text-[20px] line-weight-[24px] ">{name}</p>
+                    <p className="font-[700] text-[20px] line-weight-[24px] "></p>
                 </div>
                 <Button onClick={handleOpen}>Edit page</Button>
             </div>
@@ -53,14 +51,14 @@ function LeftEditSide() {
                 <div className="h-[1px] w-[584px] bg-[black]"></div>
             </div>
             <div className="flex flex-col gap-[12px] justify-between items-start w-[584px]">
-                <p className="text-[16px] font-[600] line-heigth-[32px]">About {name}</p>
-                <p>{name}</p>
+                <p className="text-[16px] font-[600] line-heigth-[32px]">About</p>
+                <p></p>
             </div>
         </div>
         <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
             <div className="flex flex-col gap-[12px] justify-between items-start w-[584px] ">
                 <p className="text-[16px] font-[600] line-height-[24px]">Social media URL</p>
-                <p>https://buymeacoffee.com/{name}</p>
+                <p>https://buymeacoffee.com/</p>
             </div>
         </div>
         <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
@@ -68,7 +66,7 @@ function LeftEditSide() {
                 <div className="w-[584px] border-[1px] rounded-lg">
                     <div className="py-[24px] px-[100px] flex flex-col justify-center items-center gap-[28px]">
                         <Heart className="h-[30px] w-[30px]"/>
-                        <p>Be the first one to support {name}</p>
+                        <p>Be the first one to support </p>
                     </div>
                 </div>
         </div>

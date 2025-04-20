@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 function Page() {
   const router = useRouter();
   const handleReturnToExplore = () => {
-    router.push("/dashboard/explore");
+    router.push("/Dashboard/explore");
   };
 
   return (

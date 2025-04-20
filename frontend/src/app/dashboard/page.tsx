@@ -6,7 +6,7 @@ function page() {
   return (
     <div>
         <DashboardSideBar />
-        dashboard
+       
     </div>
   )
 }

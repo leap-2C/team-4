@@ -35,9 +35,14 @@ function SuccessPage() {
       const profileData = {
         id,
         successMessage: confirmationText.trim(),
+        name: "", 
+        about: "", 
+        avatarImage: "", 
+        socialMediaURL: "",
+        backgroundImage: "", 
       };
 
-      console.log("Submitting confirmation data:", profileData); // Debug: Log data
+      console.log("Submitting confirmation data:", profileData); 
       await updateUserProfile(profileData);
       setSuccess("Confirmation message saved successfully!");
       setError(null);
@@ -48,7 +53,7 @@ function SuccessPage() {
       setError(error.message || "Failed to save confirmation message.");
       setSuccess(null);
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); 
     }
   };
 

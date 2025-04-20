@@ -5,26 +5,13 @@ import { Coffee, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LoginAndSignUp from "./_components/LoginSignup";
+import { getUserProfile } from "../_api/_components/GetUserProfile";
 
 interface UserProfile {
   name: string;
   avatarImage: string;
 }
-
-const getUserProfile = async (token: string): Promise<UserProfile> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const name = localStorage.getItem("name") || "User";
-      const avatarImage =
-        localStorage.getItem("avatarImage") ||
-        "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png";
-      resolve({
-        name,
-        avatarImage,
-      });
-    }, 500);
-  });
-};
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -34,27 +21,48 @@ const Header: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const TOKEN_KEY = "token";
-  const NAME_KEY = "name";
-  const USER_ID_KEY = "userId";
+  // Профайлыг татах функц
+  const fetchUserProfile = async (userId: string) => {
+    try {
+      const profile = await getUserProfile(userId);
+      setUserProfile({
+        ...profile,
+        avatarImage:
+          profile.avatarImage ||
+          "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png",
+      });
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+      setIsLoggedIn(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (token) {
-      setIsLoggedIn(true);
-      getUserProfile(token)
-        .then((profile) => setUserProfile(profile))
-        .catch((error) => {
-          console.error("Failed to fetch user profile:", error);
-          setIsLoggedIn(false);
-          localStorage.removeItem(TOKEN_KEY);
-          localStorage.removeItem(NAME_KEY);
-          localStorage.removeItem(USER_ID_KEY);
-        })
-        .finally(() => setLoading(false));
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
+    if (token && userId) {
+      fetchUserProfile(userId).finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
+  }, []);
+
+  // Profile шинэчлэгдсэн event-ийг барих
+  useEffect(() => {
+    const handleProfileUpdated = (event: Event) => {
+      const userId = (event as CustomEvent).detail.userId;
+      if (userId) {
+        fetchUserProfile(userId);
+      }
+    };
+
+    window.addEventListener("profileUpdated", handleProfileUpdated);
+    return () =>
+      window.removeEventListener("profileUpdated", handleProfileUpdated);
   }, []);
 
   useEffect(() => {
@@ -71,25 +79,19 @@ const Header: React.FC = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(NAME_KEY);
-    localStorage.removeItem(USER_ID_KEY);
-    localStorage.removeItem("avatarImage");
-    localStorage.removeItem("about");
-    localStorage.removeItem("socialMediaURL");
     setIsLoggedIn(false);
     setUserProfile(null);
     setOpen(false);
-    router.push("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
   };
 
   const handleToggleDropdown = () => setOpen((prev) => !prev);
 
   return (
     <header className="h-[56px] w-full flex items-center justify-between px-[80px] bg-white border-b">
-      {/* Logo */}
       <button
-        onClick={() => router.push("/dashboard/home")}
+        onClick={() => router.push("/Dashboard/home")}
         className="flex gap-2 items-center"
         aria-label="Go to dashboard"
       >
@@ -97,7 +99,6 @@ const Header: React.FC = () => {
         <p className="text-[16px] font-bold">Buy Me Coffee</p>
       </button>
 
-      {/* Right-side: Avatar and Dropdown */}
       {loading ? (
         <div className="text-sm font-medium">Түр хүлээнэ үү...</div>
       ) : isLoggedIn && userProfile ? (
@@ -111,11 +112,9 @@ const Header: React.FC = () => {
             <Avatar className="h-[40px] w-[40px]">
               <AvatarImage
                 src={userProfile.avatarImage}
-                alt={userProfile.name}
+                alt={userProfile.name || "User"}
               />
-              <AvatarFallback>
-                {userProfile.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
+              <AvatarFallback>{userProfile.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <p className="pr-[20px] font-medium text-sm">{userProfile.name}</p>
             <ChevronDown className="h-[16px] w-[16px]" />
@@ -137,9 +136,7 @@ const Header: React.FC = () => {
           )}
         </div>
       ) : (
-        <Button variant="outline" onClick={() => router.push("/login")}>
-          Login
-        </Button>
+        <LoginAndSignUp />
       )}
     </header>
   );

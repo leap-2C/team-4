@@ -2,15 +2,20 @@ import axios from "axios";
 import { API_URL } from "../api";
 
 export interface Profile {
+  socialMediaURL: string;
+  about: string;
   id: string;
   name: string;
   avatarImage: string | null;
   bio: string | null;
   link: string | null;
+  
 }
 
 export const getUserProfile = async (userId: string): Promise<Profile> => {
+  
   try {
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       throw new Error("Хэрэглэгчийн ID оруулна уу.");
     }

@@ -16,6 +16,7 @@ const Complete = () => {
   const [about, setAbout] = useState("");
   const [socialMediaURL, setSocialMediaURL] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,11 +38,11 @@ const Complete = () => {
       setError(null);
       const userId = localStorage.getItem("userId");
       if (!userId) {
-        throw new Error("User ID not found. Please log in again.");
+        throw new Error("Хэрэглэгчийн ID олдсонгүй. Дахин нэвтэрнэ үү.");
       }
 
       if (!name.trim()) {
-        throw new Error("Name is required.");
+        throw new Error("Нэр оруулах шаардлагатай.");
       }
 
       const userProfile = {
@@ -51,21 +52,23 @@ const Complete = () => {
         avatarImage: image || "",
         socialMediaURL: socialMediaURL.trim(),
         backgroundImage: "",
-        successMessage: "Profile created successfully!",
       };
 
       console.log("Submitting profile:", userProfile);
       await createUserProfile(userProfile);
 
-      // ✅ Save to localStorage
-      localStorage.setItem("name", userProfile.name);
-      localStorage.setItem("avatarImage", userProfile.avatarImage);
-      localStorage.setItem("about", userProfile.about);
-      localStorage.setItem("socialMediaURL", userProfile.socialMediaURL);
+  
+      const profileUpdatedEvent = new CustomEvent("profileUpdated", {
+        detail: { userId },
+      });
+      window.dispatchEvent(profileUpdatedEvent);
 
-      router.push("/dashboard/home");
+      setSuccess("Профайл амжилттай үүслээ!");
+      setTimeout(() => {
+        router.push("/Dashboard/home");
+      }, 1000);
     } catch (error: any) {
-      const errorMessage = error.message || "Failed to create profile.";
+      const errorMessage = error.message || "Профайл үүсгэхэд алдаа гарлаа.";
       setError(errorMessage);
       console.error("Submission error:", error);
     }
@@ -90,7 +93,7 @@ const Complete = () => {
               router.push("/login");
             }}
           >
-            Log out
+            Гарах
           </Button>
         </div>
       </div>
@@ -98,13 +101,16 @@ const Complete = () => {
       {/* Form */}
       <div className="flex justify-center items-center w-full h-full">
         <div className="w-[510px] gap-[24px] flex flex-col">
-          <p className="text-[24px] font-[600]">Complete your profile page</p>
+          <p className="text-[24px] font-[600]">
+            Профайлаа бүрэн гүйцэд бөглөнө үү
+          </p>
 
           {error && <p className="text-red-500 text-[16px]">{error}</p>}
+          {success && <p className="text-green-600 text-[16px]">{success}</p>}
 
           {/* Avatar Upload */}
           <div className="gap-[8px] flex flex-col">
-            <p>Add photo</p>
+            <p>Зураг нэмэх</p>
             <Avatar
               className="w-[160px] h-[160px] cursor-pointer hover:opacity-80 transition flex items-center justify-center relative"
               onClick={triggerFileInput}
@@ -130,26 +136,26 @@ const Complete = () => {
           {/* Form Inputs */}
           <div className="flex flex-col gap-[12px]">
             <div>
-              <p>Name</p>
+              <p>Нэр</p>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="h-[40px]"
                 type="text"
-                placeholder="Enter your name here"
+                placeholder="Нэрээ оруулна уу"
               />
             </div>
             <div>
-              <p>About</p>
+              <p>Тухай</p>
               <textarea
                 value={about}
                 onChange={(e) => setAbout(e.target.value)}
-                placeholder="Write about yourself here"
+                placeholder="Өөрийн тухай бичнэ үү"
                 className="h-[131px] w-full border-[2px] rounded-lg p-[12px]"
               />
             </div>
             <div>
-              <p>Social media URL</p>
+              <p>Сошиал медиагийн URL</p>
               <Input
                 value={socialMediaURL}
                 onChange={(e) => setSocialMediaURL(e.target.value)}
@@ -166,7 +172,7 @@ const Complete = () => {
               onClick={handleSubmitProfile}
               className="h-[40px] w-[246px]"
             >
-              Continue
+              Үргэлжлүүлэх
             </Button>
           </div>
         </div>

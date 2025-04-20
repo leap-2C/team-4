@@ -1,8 +1,14 @@
 import prisma from "../../utils/PrismaClient";
 import { Request, Response } from "express";
 
+
+interface CustomRequest extends Request {
+  file?: Express.Multer.File;
+}
+import cloudinary from "../../utils/cloudinary";
+
 export const updateProfile = async (
-  req: Request,
+  req: CustomRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -21,16 +27,25 @@ export const updateProfile = async (
       return;
     }
 
+    let imageUrl = backgroundImage || "";
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "Profile",
+      });
+      imageUrl = result.secure_url;
+    }
+
     const updatedProfile = await prisma.profile.update({
       where: {
-        id: id, 
+        id: id,
       },
       data: {
         name,
         about,
         avatarImage,
         socialMediaURL,
-        backgroundImage,
+        backgroundImage: imageUrl,
         successMessage,
       },
     });

@@ -8,25 +8,29 @@ export interface Password {
 
 export const updatepassword = async (data: Password) => {
   try {
-    console.log(data);
-    
     const token = localStorage.getItem("token");
-    console.log(token);
-    
-    const response = await axios.put(`${API_URL}/users/${data.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      password: data.password,
-    });
-    console.log(response);
-    
+    if (!token) {
+      throw new Error("Нэвтрэх токен олдсонгүй. Дахин нэвтэрнэ үү.");
+    }
+
+    const response = await axios.put(
+      `${API_URL}/users/${data.id}`,
+      { password: data.password },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     if (!response.data) {
-      throw new Error("Password update failed!");
+      throw new Error("Нууц үг шинэчлэхэд алдаа гарлаа!");
     }
 
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Password update failed");
+    throw new Error(
+      error.response?.data?.message || "Нууц үг шинэчлэхэд алдаа гарлаа"
+    );
   }
 };

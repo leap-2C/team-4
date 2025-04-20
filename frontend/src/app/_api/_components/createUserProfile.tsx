@@ -67,3 +67,4 @@ export const createUserProfile = async (data: UserProfile) => {
     throw new Error(error.message || "Тодорхойгүй алдаа гарлаа.");
   }
 };
+            

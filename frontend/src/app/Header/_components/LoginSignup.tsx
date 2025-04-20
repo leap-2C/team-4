@@ -12,7 +12,7 @@ const LoginAndSignUp = () => {
         Sign Up
       </a>
       <a
-        href="/Login"
+        href="/login"
         className="w-[75px] h-[36px] flex items-center justify-center bg-secondary text-sm rounded-lg font-medium"
       >
         Log in

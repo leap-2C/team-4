@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 function Rightside() {
     const router = useRouter();
     const handleDonationComplete = () => {
-        router.push("/donation-completed");
+        router.push("/Donation-completed");
     };
     return (
         <div className="border-[1px] rounded-lg w-[682px] bg-[white]">

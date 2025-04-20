@@ -54,7 +54,7 @@ function Page() {
 
   const handleDonationComplete = () => {
     // TODO: Implement donation logic (e.g., send data to payment API)
-    router.push("/donation-completed");
+    router.push("/Donation-completed");
   };
 
   if (loading) {

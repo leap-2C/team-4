@@ -29,10 +29,10 @@ const login = async (req: Request, res: Response): Promise<void> => {
       { id: user.id, email: user.email },
       process.env.JWT_SECRET as string,
       {
-        expiresIn: "1h",
+        expiresIn: "6h",
       }
     );
-    res.status(200).json({ message: "Login successful",userId: user.id });
+    res.status(200).json({ message: "Login successful",userId: user.id, token: token});
   } catch (error) {
     console.log("Error:", error);
     res.status(500).json({ message: "Server error" });

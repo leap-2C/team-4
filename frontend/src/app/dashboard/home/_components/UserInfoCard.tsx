@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getUserProfile } from "@/app/_api/_components/GetUserProfile"; 
 
 const frameworks = [
   { value: "Last 30 days", label: "Last 30 days" },
@@ -34,14 +35,22 @@ function UserInfoCard() {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setName(localStorage.getItem("name") || "");
-      setAvatarImage(
-        localStorage.getItem("avatarImage") ||
-          "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png"
-      );
-      setAbout(localStorage.getItem("about") || "");
-      setSocialMediaURL(localStorage.getItem("socialMediaURL") || "");
+    const userId = localStorage.getItem("token");
+
+    if (userId) {
+      getUserProfile(userId)
+        .then((profile) => {
+          setName(profile.name || "");
+          setAvatarImage(
+            profile.avatarImage ||
+              "https://w7.pngwing.com/pngs/754/473/png-transparent-avatar-boy-man-avatar-vol-1-icon.png"
+          );
+          setAbout(profile.bio || "");
+          setSocialMediaURL(profile.link || "");
+        })
+        .catch((err) => {
+          console.error("Profile fetch error:", err);
+        });
     }
   }, []);
 
@@ -71,11 +80,6 @@ function UserInfoCard() {
             <p className="text-[14px] font-normal text-muted-foreground">
               buymeacoffee.com/{name || "user"}
             </p>
-            {/* {about && (
-              <p className="text-[13px] text-gray-600 mt-1 max-w-[400px]">
-                {about}
-              </p>
-            )} */}
             {socialMediaURL && (
               <a
                 href={socialMediaURL}
@@ -135,9 +139,7 @@ function UserInfoCard() {
                         key={framework.value}
                         value={framework.value}
                         onSelect={(currentValue) => {
-                          setValue(
-                            currentValue === value ? "" : currentValue
-                          );
+                          setValue(currentValue === value ? "" : currentValue);
                           setOpen(false);
                         }}
                       >

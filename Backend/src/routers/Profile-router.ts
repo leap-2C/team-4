@@ -9,5 +9,5 @@ export const profileRouter = express.Router();
 
 profileRouter.post('/', createProfile);
 profileRouter.get('/:id', getProfile);
-profileRouter.put('/', Authorization, updateProfile);
+profileRouter.put('/:id', Authorization, updateProfile);
 profileRouter.get("/", getAllProfile)

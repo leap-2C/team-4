@@ -23,7 +23,7 @@ function CoverPictureStyle() {
       reader.onloadend = () => {
         const base64Image = reader.result as string;
         setImage(base64Image);
-        localStorage.setItem("coverImage", base64Image); // Save to localStorage
+        
       };
       reader.readAsDataURL(file);
     }

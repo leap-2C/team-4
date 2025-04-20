@@ -1,6 +1,8 @@
 import React from 'react'
 
 const LoginAndSignUp = () => {
+
+  
   return (
     <div className="w-[152.81px] flex gap-3">
       <a
@@ -10,7 +12,7 @@ const LoginAndSignUp = () => {
         Sign Up
       </a>
       <a
-        href="/login"
+        href="/Login"
         className="w-[75px] h-[36px] flex items-center justify-center bg-secondary text-sm rounded-lg font-medium"
       >
         Log in

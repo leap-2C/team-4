@@ -5,8 +5,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Heart, Camera, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { getUserProfile } from "@/app/_api/_components/GetUserProfile";
 import { updateUserProfile } from "@/app/_api/_components/updateUserProfile";
+import { getOwnUserProfile } from "@/app/_api/_components/GetOwnUserProfile";
 
 function LeftEditSide() {
   const [open, setOpen] = useState(false);
@@ -32,7 +32,7 @@ function LeftEditSide() {
           throw new Error("Хэрэглэгчийн ID олдсонгүй. Дахин нэвтэрнэ үү.");
         }
 
-        const profile = await getUserProfile(userId);
+        const profile = await getOwnUserProfile(userId);
         setName(profile.name);
         setAbout(profile.about || "");
         setSocialMediaURL(profile.socialMediaURL || "");

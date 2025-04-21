@@ -65,7 +65,7 @@ const Complete = () => {
 
       setSuccess("Профайл амжилттай үүслээ!");
       setTimeout(() => {
-        router.push("/dashboard/home");
+        router.push("/Dashboard/home");
       }, 1000);
     } catch (error: any) {
       const errorMessage = error.message || "Профайл үүсгэхэд алдаа гарлаа.";

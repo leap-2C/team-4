@@ -60,9 +60,8 @@ function Login() {
 
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.userId);
-      localStorage.setItem("userName", response.name);
 
-      router.push("/dashboard/home");
+      router.push("/Dashboard/home");
     } catch (error: any) {
       setServerError("Имэйл эсвэл нууц үг буруу байна");
     } finally {

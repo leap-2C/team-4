@@ -4,71 +4,29 @@ import React, { useState, useRef, useEffect } from "react";
 import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { updateUserProfile } from "@/app/_api/_components/updateUserProfile";
 
 function CoverPictureStyle() {
   const [image, setImage] = useState<string | null>(null);
-  const [userData, setUserData] = useState({
-    userId: "",
-    name: "",
-    avatarImage: "",
-    about: "",
-    socialMediaURL: "",
-  });
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId") || "";
-    const name = localStorage.getItem("name") || "";
-    const avatarImage = localStorage.getItem("avatarImage") || "";
-    const about = localStorage.getItem("about") || "";
-    const socialMediaURL = localStorage.getItem("socialMediaURL") || "";
-    const coverImage = localStorage.getItem("coverImage");
-
-    setUserData({ userId, name, avatarImage, about, socialMediaURL });
-
-    if (coverImage) {
-      setImage(coverImage);
+    const storedImage = localStorage.getItem("coverImage");
+    if (storedImage) {
+      setImage(storedImage);
     }
   }, []);
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Image = reader.result as string;
-      setImage(base64Image);
-      localStorage.setItem("coverImage", base64Image);
-
-      try {
-        const { userId, name, about, avatarImage, socialMediaURL } = userData;
-
-        // if (!userId || !name) {
-        //   throw new Error("User ID or Name not found.");
-        // }
-
-        const payload = {
-          id: userId,
-          name: name,
-          about,
-          avatarImage,
-          socialMediaURL,
-          backgroundImage: base64Image,
-        };
-
-        console.log("Sending to backend:", payload);
-
-        await updateUserProfile(payload);
-        console.log("✅ Background updated successfully");
-      } catch (err: any) {
-        alert(err.message);
-      }
-    };
-
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result as string;
+        setImage(base64Image);
+        
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const triggerFileInput = () => {
@@ -84,7 +42,6 @@ function CoverPictureStyle() {
           No Cover Image
         </div>
       )}
-
       <div className="absolute top-4 right-4 z-10">
         <Button
           variant="ghost"

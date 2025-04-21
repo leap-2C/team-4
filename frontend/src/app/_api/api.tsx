@@ -1,5 +1,5 @@
 
-export const API_URL = "http://localhost:5000";
+export const API_URL = "https://backend-tawny-delta.vercel.app";
 
 export interface PaymentDetails {
   id: string;

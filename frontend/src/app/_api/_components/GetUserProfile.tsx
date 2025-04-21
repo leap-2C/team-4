@@ -9,7 +9,7 @@ export interface Profile {
   avatarImage: string | null;
   bio: string | null;
   link: string | null;
-  backgroundImage: string | null;
+  
 }
 
 export const getUserProfile = async (userId: string): Promise<Profile> => {

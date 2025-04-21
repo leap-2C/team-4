@@ -30,7 +30,7 @@ function SuccessPage() {
       return;
     }
 
-    setIsLoading(true); // Start loading
+    setIsLoading(true); 
     try {
       const profileData = {
         id,

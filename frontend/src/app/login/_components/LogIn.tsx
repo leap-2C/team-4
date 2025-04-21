@@ -61,7 +61,7 @@ function Login() {
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.userId);
 
-      router.push("/Dashboard/home");
+      router.push("/dashboard/home");
     } catch (error: any) {
       setServerError("Имэйл эсвэл нууц үг буруу байна");
     } finally {

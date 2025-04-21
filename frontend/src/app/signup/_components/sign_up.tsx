@@ -57,7 +57,7 @@ function Signup() {
         console.log("Signup response:", response);
         
         setSuccessMessage("Бүртгэл амжилттай! Хуудсыг шилжүүлж байна...");
-        setTimeout(() => router.replace("/Complete"), 2000);
+        setTimeout(() => router.replace("/complete"), 2000);
       } catch (error: any) {
         setErrors((prev) => ({
           ...prev,

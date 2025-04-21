@@ -12,10 +12,10 @@ export interface Profile {
   
 }
 
-export const getUserProfile = async (userId: string): Promise<Profile> => {
+export const getOwnUserProfile = async (userId: string): Promise<Profile> => {
   
   try {
-    // const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       throw new Error("Хэрэглэгчийн ID оруулна уу.");
     }

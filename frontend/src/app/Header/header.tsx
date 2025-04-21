@@ -21,7 +21,6 @@ const Header: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Профайлыг татах функц
   const fetchUserProfile = async (userId: string) => {
     try {
       const profile = await getUserProfile(userId);
@@ -91,7 +90,7 @@ const Header: React.FC = () => {
   return (
     <header className="h-[56px] w-full flex items-center justify-between px-[80px] bg-white border-b">
       <button
-        onClick={() => router.push("/Dashboard/home")}
+        onClick={() => router.push("/dashboard/home")}
         className="flex gap-2 items-center"
         aria-label="Go to dashboard"
       >

@@ -10,6 +10,7 @@ interface LoginResponse {
   userId: string;
   token: string;
   message: string;
+  name: string
 }
 
 export const login = async (data: LoginPayload): Promise<LoginResponse> => {

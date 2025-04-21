@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -12,11 +11,18 @@ interface Profile {
   id: string;
   name: string;
   avatarImage: string;
-  bio: string;
-  link: string;
+  bio?: string;
+  link?: string;
+  about?: string;
+  socialMediaURL?: string;
 }
 
-function UsersCard() {
+
+interface UsersCardProps {
+  searchTerm: string;
+}
+
+function UsersCard({ searchTerm }: UsersCardProps) {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +34,6 @@ function UsersCard() {
         const data = await getAllProfile();
         setProfiles(data);
       } catch (err: any) {
-        console.error("Error in UsersCard:", err);
         if (err.message.includes("404")) {
           setError("Хэрэглэгчийн мэдээлэл олдсонгүй.");
         } else {
@@ -42,9 +47,9 @@ function UsersCard() {
     fetchProfiles();
   }, []);
 
-  const handleViewPage = (id: string) => {
-    router.push(`/view-page-other-user/${id}`);
-  };
+  const filteredProfiles = profiles.filter((profile) =>
+    profile.name.toLowerCase().includes((searchTerm || "").toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -62,7 +67,7 @@ function UsersCard() {
     );
   }
 
-  if (profiles.length === 0) {
+  if (filteredProfiles.length === 0) {
     return (
       <div className="w-[861px] flex justify-center p-6">
         <p className="text-[16px] font-medium">Хэрэглэгч олдсонгүй.</p>
@@ -71,10 +76,13 @@ function UsersCard() {
   }
 
   return (
-    <div className="w-[861px] flex flex-col gap-6 p-6">
-      {profiles.map((profile) => (
-        <div key={profile.id} className="w-[861px] flex flex-col gap-3">
-          <div className="w-[861px] flex justify-between">
+    <div className="w-full flex flex-col gap-6">
+      {filteredProfiles.map((profile) => (
+        <div
+          key={profile.id}
+          className="w-full flex flex-col gap-3 border border-gray-300 rounded-[8px] p-[24px]"
+        >
+          <div className="w-full flex justify-between">
             <div className="flex items-center gap-3">
               <Avatar className="w-[40px] h-[40px]">
                 <AvatarImage src={profile.avatarImage} alt={profile.name} />
@@ -83,30 +91,35 @@ function UsersCard() {
               <p className="text-[20px] font-semibold">{profile.name}</p>
             </div>
             <Button
-              onClick={() => handleViewPage(profile.id)}
+              onClick={() => router.push(`/view-page-other-user/${profile.id}`)}
               className="text-[14px] font-medium h-[40px] w-[136px] flex gap-2"
             >
-              Харах <ExternalLink className="w-[16px] h-[16px]" />
+              View profile <ExternalLink className="w-[16px] h-[16px]" />
             </Button>
           </div>
-          <div className="w-[861px] h-[124px] flex justify-between">
-            <div className="w-[420px] h-[124px] flex flex-col justify-between">
-              <p className="text-[16px] font-semibold">{profile.name}-н тухай</p>
-              <div className="w-[420px] h-[80px] overflow-scroll text-[14px] font-normal">
-                {profile.bio || "Тодорхойлолт байхгүй байна."}
+
+          <div className="w-full flex flex-wrap justify-between gap-4 mt-4">
+            <div className="w-full md:w-[420px] flex flex-col gap-2">
+              <p className="text-[16px] font-semibold">About {profile.name}</p>
+              <div className="h-[80px] overflow-auto text-[14px] font-normal">
+                {profile.about || profile.bio || "Тодорхойлолт байхгүй байна."}
               </div>
             </div>
-            <div className="w-[420px] h-[124px] flex flex-col justify-between">
-              <p className="text-[16px] font-semibold">Холбоос</p>
-              <div className="w-[420px] h-[80px] overflow-scroll text-[14px] font-normal">
-                <a
-                  href={profile.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {profile.link || "Холбоос байхгүй байна."}
-                </a>
+            <div className="w-full md:w-[420px] flex flex-col gap-2">
+              <p className="text-[16px] font-semibold">Social media URL</p>
+              <div className="h-[80px] overflow-auto text-[14px] font-normal">
+                {profile.socialMediaURL || profile.link ? (
+                  <a
+                    href={profile.socialMediaURL || profile.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline break-words"
+                  >
+                    {profile.socialMediaURL || profile.link}
+                  </a>
+                ) : (
+                  "Холбоос байхгүй байна."
+                )}
               </div>
             </div>
           </div>

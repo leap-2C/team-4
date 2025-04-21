@@ -14,7 +14,6 @@ function LeftEditSide() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-
   const [image, setImage] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
@@ -27,18 +26,13 @@ function LeftEditSide() {
     const fetchProfile = async () => {
       setIsLoading(true);
       try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) {
-          throw new Error("Хэрэглэгчийн ID олдсонгүй. Дахин нэвтэрнэ үү.");
-        }
-
-        const profile = await getUserProfile(userId);
+        const profile = await getUserProfile(); 
         setName(profile.name);
         setAbout(profile.about || "");
         setSocialMediaURL(profile.socialMediaURL || "");
         setImage(profile.avatarImage || "");
       } catch (err: any) {
-        setError(err.message || "Профайлын мэдээлэл татахад алдаа гарлаа.");
+        setError(err.message || "Failed to fetch profile information.");
       } finally {
         setIsLoading(false);
       }
@@ -47,7 +41,7 @@ function LeftEditSide() {
     fetchProfile();
   }, []);
 
-  // Профайлыг шинэчлэх
+  // Handle profile saving
   const handleSaveChanges = async () => {
     setIsLoading(true);
     setError(null);
@@ -56,11 +50,11 @@ function LeftEditSide() {
     try {
       const userId = localStorage.getItem("userId");
       if (!userId) {
-        throw new Error("Хэрэглэгчийн ID олдсонгүй. Дахин нэвтэрнэ үү.");
+        throw new Error("User ID not found. Please log in again.");
       }
 
       if (!name.trim()) {
-        throw new Error("Нэр оруулах шаардлагатай.");
+        throw new Error("Name is required.");
       }
 
       const profileData = {
@@ -72,21 +66,20 @@ function LeftEditSide() {
         backgroundImage: "",
       };
 
-      await updateUserProfile(profileData);
+      await updateUserProfile(profileData); 
 
-      // profileUpdated event үүсгэх
       const profileUpdatedEvent = new CustomEvent("profileUpdated", {
         detail: { userId },
       });
       window.dispatchEvent(profileUpdatedEvent);
 
-      setSuccess("Профайл амжилттай шинэчлэгдлээ!");
+      setSuccess("Profile updated successfully!");
       setTimeout(() => {
         setOpen(false);
         setSuccess(null);
       }, 1000);
     } catch (err: any) {
-      setError(err.message || "Профайл шинэчлэхэд алдаа гарлаа.");
+      setError(err.message || "Error updating profile.");
     } finally {
       setIsLoading(false);
     }
@@ -97,11 +90,12 @@ function LeftEditSide() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result as string);
+        setImage(reader.result as string); 
       };
       reader.readAsDataURL(file);
     }
   };
+
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
@@ -121,9 +115,8 @@ function LeftEditSide() {
 
   return (
     <div className="flex flex-col w-[682px] justify-center items-center gap-[24px]">
-      {/* Profile Card */}
       <div className="border-[1px] rounded-lg gap-[8px] flex flex-col justify-center items-center w-[100%] p-[24px]">
-        {isLoading && <p>Ачааллаж байна...</p>}
+        {isLoading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {success && <p className="text-green-600">{success}</p>}
         <div className="flex justify-between items-center w-[584px] h-[48px]">
@@ -139,22 +132,21 @@ function LeftEditSide() {
             </div>
             <p className="font-[700] text-[20px] line-height-[24px]">{name}</p>
           </div>
-          <Button onClick={handleOpen}>Хуудсыг засах</Button>
+          <Button onClick={handleOpen}>Edit Profile</Button>
         </div>
         <div className="py-[16px]">
           <div className="h-[1px] w-[584px] bg-[black]"></div>
         </div>
         <div className="flex flex-col gap-[12px] justify-between items-start w-[584px]">
-          <p className="text-[16px] font-[600] line-height-[32px]">Тухай</p>
+          <p className="text-[16px] font-[600] line-height-[32px]">About</p>
           <p>{about}</p>
         </div>
       </div>
 
-      {/* Social Media URL Section */}
       <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
         <div className="flex flex-col gap-[12px] justify-between items-start w-[584px]">
           <p className="text-[16px] font-[600] line-height-[24px]">
-            Сошиал медиагийн URL
+            Social Media URL
           </p>
           {socialMediaURL && (
             <a
@@ -169,18 +161,6 @@ function LeftEditSide() {
         </div>
       </div>
 
-      {/* Recent Supporters Section */}
-      <div className="border-[1px] rounded-lg w-[100%] flex flex-col justify-center items-center p-[24px]">
-        <p className="w-[584px] h-[36px]">Сүүлийн дэмжигчид</p>
-        <div className="w-[584px] border-[1px] rounded-lg">
-          <div className="py-[24px] px-[100px] flex flex-col justify-center items-center gap-[28px]">
-            <Heart className="h-[30px] w-[30px]" />
-            <p>Анхны дэмжигч болоорой</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Edit Profile Modal */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="w-[610px] gap-[24px] flex flex-col bg-white p-[32px] rounded-lg shadow-lg">
@@ -190,15 +170,15 @@ function LeftEditSide() {
               </div>
               <div className="flex flex-col gap-[8px]">
                 <p className="text-[24px] font-semibold leading-[32px]">
-                  Профайлыг засах
+                  Edit Profile
                 </p>
                 <p>
-                  Профайлдаа өөрчлөлт оруулаад, дууссаны дараа хадгалах товчийг
-                  дарна уу.
+                  Please update your profile and click save changes when you're
+                  done.
                 </p>
               </div>
               <div className="gap-[8px] flex flex-col">
-                <p>Зураг нэмэх</p>
+                <p>Profile Image</p>
                 <Avatar
                   className="w-[160px] h-[160px] cursor-pointer hover:opacity-80 transition flex items-center justify-center relative"
                   onClick={triggerFileInput}
@@ -223,26 +203,26 @@ function LeftEditSide() {
             </div>
             <div className="flex flex-col gap-[12px]">
               <div className="flex flex-col gap-[8px]">
-                <p>Нэр</p>
+                <p>Name</p>
                 <Input
                   className="h-[40px]"
                   type="text"
-                  placeholder="Нэрээ оруулна уу"
+                  placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-[8px]">
-                <p>Тухай</p>
+                <p>About</p>
                 <textarea
                   className="h-[131px] w-full border-[2px] rounded-lg p-[12px]"
-                  placeholder="Өөрийн тухай бичнэ үү"
+                  placeholder="Tell us about yourself"
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
                 />
               </div>
               <div className="flex flex-col gap-[8px]">
-                <p>Сошиал медиагийн URL</p>
+                <p>Social Media URL</p>
                 <Input
                   className="h-[40px]"
                   type="text"
@@ -263,14 +243,14 @@ function LeftEditSide() {
                   className="h-[40px] bg-gray-200 text-black"
                   disabled={isLoading}
                 >
-                  Цуцлах
+                  Cancel
                 </Button>
                 <Button
                   onClick={handleSaveChanges}
                   className="h-[40px] bg-black text-white"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Хадгалж байна..." : "Өөрчлөлтийг хадгалах"}
+                  {isLoading ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>

@@ -7,16 +7,16 @@ function DashboardSideBar() {
   const router = useRouter();
 
   const handleHomeClick = () => {
-    router.push("/Dashboard/home");
+    router.push("/dashboard/home");
   };
   const handleExploreClick = () => {
-    router.push("/Dashboard/explore");
+    router.push("/dashboard/explore");
   };
   const handleViewPageClick = () => {
     router.push("/view-page");
   };
   const handleAccountSettingsClick = () => {
-    router.push("/Dashboard/account-settings");
+    router.push("/dashboard/account-settings");
   };
 
   return (

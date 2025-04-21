@@ -55,9 +55,10 @@ function Signup() {
           password,
         });
         console.log("Signup response:", response);
-        
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("userId", response.userId);
         setSuccessMessage("Бүртгэл амжилттай! Хуудсыг шилжүүлж байна...");
-        setTimeout(() => router.replace("/Complete"), 2000);
+        setTimeout(() => router.replace("/complete"), 2000);
       } catch (error: any) {
         setErrors((prev) => ({
           ...prev,

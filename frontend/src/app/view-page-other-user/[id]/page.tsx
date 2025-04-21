@@ -9,17 +9,15 @@ import { Input } from "@/components/ui/input";
 import { Coffee, Heart } from "lucide-react";
 import { getUserProfile, Profile } from "@/app/_api/_components/GetUserProfile";
 
-// Simple URL validation to prevent XSS
 const sanitizeUrl = (url: string | null): string => {
   if (!url) return "";
   try {
     const parsedUrl = new URL(url);
-    // Allow only http or https protocols
     if (parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:") {
       return url;
     }
   } catch {
-    // Invalid URL
+
   }
   return "";
 };
@@ -28,14 +26,15 @@ function Page() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const params = useParams();
+  const params = useParams(); 
   const router = useRouter();
   const id = params.id as string;
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!id) return; 
       try {
-        const data = await getUserProfile(id);
+        const data = await getUserProfile(id as string);  
         setProfile(data);
       } catch (err: any) {
         setError(err.message || "Хэрэглэгчийн мэдээлэл татахад алдаа гарлаа.");
@@ -53,8 +52,7 @@ function Page() {
   }, [id]);
 
   const handleDonationComplete = () => {
-    // TODO: Implement donation logic (e.g., send data to payment API)
-    router.push("/Donation-completed");
+    router.push("/donation-completed");  
   };
 
   if (loading) {
@@ -90,14 +88,13 @@ function Page() {
     );
   }
 
-  const sanitizedLink = sanitizeUrl(profile.link);
-
+  const sanitizedLink = sanitizeUrl(profile.link);  
   return (
     <div className="relative w-screen min-h-screen">
       <Header />
       <img
-        src="/banner.jpg"
-        alt=""
+        src={profile.backgroundImage || "/banner.jpg"}
+        alt="User Background"
         className="w-full h-[320px] object-cover"
       />
       <div className="absolute top-[20%] w-full z-30 flex flex-col lg:flex-row gap-[24px] justify-center px-4">
@@ -141,6 +138,7 @@ function Page() {
               </a>
             </div>
           </div>
+
           <div className="border-[1px] rounded-lg w-full flex flex-col justify-center items-center p-[24px]">
             <p className="w-full max-w-[584px] h-[36px] text-[16px] font-[600]">
               Сүүлийн дэмжигчид
@@ -153,6 +151,7 @@ function Page() {
             </div>
           </div>
         </div>
+
         <div className="border-[1px] rounded-lg w-full max-w-[682px] bg-white">
           <div className="flex flex-col gap-[32px] p-[24px]">
             <div className="flex flex-col gap-[24px]">
@@ -162,60 +161,35 @@ function Page() {
               <div className="flex flex-col gap-[8px]">
                 <p>Хэмжээ сонго:</p>
                 <div className="flex gap-[8px] flex-wrap">
-                  <Button
-                    className="flex gap-[5px] h-[40px] w-[72px]"
-                    aria-label="Donate $1"
-                  >
-                    <Coffee />
-                    $1
+                  <Button className="flex gap-[5px] h-[40px] w-[72px]" aria-label="Donate $1">
+                    <Coffee /> $1
                   </Button>
-                  <Button
-                    className="flex gap-[5px] h-[40px] w-[72px]"
-                    aria-label="Donate $2"
-                  >
-                    <Coffee />
-                    $2
+                  <Button className="flex gap-[5px] h-[40px] w-[72px]" aria-label="Donate $2">
+                    <Coffee /> $2
                   </Button>
-                  <Button
-                    className="flex gap-[5px] h-[40px] w-[72px]"
-                    aria-label="Donate $5"
-                  >
-                    <Coffee />
-                    $5
+                  <Button className="flex gap-[5px] h-[40px] w-[72px]" aria-label="Donate $5">
+                    <Coffee /> $5
                   </Button>
-                  <Button
-                    className="flex gap-[5px] h-[40px] w-[72px]"
-                    aria-label="Donate $10"
-                  >
-                    <Coffee />
-                    $10
+                  <Button className="flex gap-[5px] h-[40px] w-[72px]" aria-label="Donate $10">
+                    <Coffee /> $10
                   </Button>
                 </div>
               </div>
             </div>
+
             <div className="flex flex-col gap-[20px]">
               <div className="flex flex-col gap-[8px]">
                 <p>BuyMeCoffee эсвэл нийгмийн хаягийн URL оруул:</p>
-                <Input
-                  className="h-[40px]"
-                  placeholder={sanitizedLink || "buymeacoffee.com/"}
-                  defaultValue={sanitizedLink}
-                />
+                <Input className="h-[40px]" placeholder={sanitizedLink || "buymeacoffee.com/"} defaultValue={sanitizedLink} />
               </div>
               <div className="flex flex-col gap-[8px]">
                 <p>Онцгой зурвас:</p>
-                <Input
-                  className="h-[131px]"
-                  placeholder="Энд таны зурвасыг бичнэ үү"
-                />
+                <Input className="h-[131px]" placeholder="Энд таны зурвасыг бичнэ үү" />
               </div>
             </div>
+
             <div>
-              <Button
-                onClick={handleDonationComplete}
-                className="w-full"
-                aria-label={`Дэмжих ${profile.name}`}
-              >
+              <Button onClick={handleDonationComplete} className="w-full" aria-label={`Дэмжих ${profile.name}`}>
                 Дэмжих
               </Button>
             </div>
